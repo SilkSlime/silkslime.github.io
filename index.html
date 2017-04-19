@@ -1,215 +1,403 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>hw2</title>
+    <meta name="viewport" content="max-device-width">
+    <title>A-Site</title>
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-        .menu {
+        @import url('https://fonts.googleapis.com/css?family=Bungee|Concert+One|Copse|Macondo|Nunito|Patua+One|Ubuntu+Mono');
+        body{
+            margin: 0px;
+            background: #01A2A6;
+        }
+        p{
+            margin: 3px;
+            font-family: "Nunito";
+        }
+        h1{
+            font-family: "Patua One";
+        }
+        h2{
+            font-family: "Ubuntu Mono";
+        }
+        a{
+            text-decoration: none;
+        }
+        a:link{
+            color: #35203B;
+        }
+        a:visited{
+            color: #35203B;
+        }
+        article:hover,.article_double:hover{
+            background: #d5f7a4;
+        }
+        .menu_item:hover{
+            background: #6df4cf;
+        }
+        
+        nav{
+            width: 200px;
+            height: 100%;
+            
+            position: fixed;
+            
+            top: 46px;
+            left: -200px;
+            
+            background: #1695A3;
+            
+            transition: 0.5s;
+        }
+        .menu_vis{
+            left:0;
+        }
+        ul{
+            margin: 0;
+            padding: 10px;
+        }
+        .menu_item{
+            display: block;
+            background: #73E88B;
+            margin: 4px 0px 0px 10px;
+            padding: 9px;
+            border-radius: 10px;
+            font-family: "Concert One";
+            transition: .5s;
+        }
+        .sec{
+            font-family: "Bungee";
+            background: #A5E84F;
+            padding: 0px 0px 0px 10px;
+            margin: 4px 0px 0px -5px;
+        }
+        
+        
+        .site_name{
+            height: 40px;
+            width: 100%;
             position: fixed;
             top: 0%;
-            background: #109aff;
-            width: 100%;
-            height: 50px;
+            background: #2F2933;
+            padding: 3px;
+        }
+        .site_label{
+            font-family: "Macondo";
+            color: #FFFFA6;
+            font-size: 2rem;
+            font-weight: 900;
+            position: absolute;
+            left: 60px;
+            top: 7px;
+            vertical-align: middle;
+        }
+        button{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border: none;
+            width: 25px;
+            height: 25px;
+            background:url(https://edensprings.ru/images/mobile-menu-button.png) 10%/cover;
+            color: white;
+        }
+        
+        
+        .content{
+            margin: 76px 20px 0px 20px;
+        }
+        section{
+            padding: 10px;
+            margin: 0px 10px;
+            background: #29D9C2;
+            border-radius: 10px;
+            margin: 0px 0px 10px 0px;
+        }
+        article{
+            vertical-align: text-top;
+            display: block;
+            padding: 10px;
+            margin: 10px 2px 10px 2px;
+            background: #BDF271;
+            border-radius: 10px;
+            transition: .5s;
+        }
+        .article_double{
+            vertical-align: text-top;
+            display: block;
+            padding: 10px;
+            width: auto;
+            margin: 10px 2px 10px 2px;
+            background: #BDF271;
+            border-radius: 10px;
+            transition: .5s;
+        }
+        
+        @media (min-width: 768px){
+            nav{
+                width: 100%;
+                height: 50px;
+                left: 0;
+            }
+            .menu_item{
+                font-size: 0.9rem;
+                display: inline-block;
+                vertical-align: middle;
+                margin: 5px auto auto 0px;
+                padding: 5px 10px 5px 10px;
+                border-radius: 10px;
+            }
+            .sec{
+                font-size: 0.7rem;
+                padding: 0px 10px 0px 10px;
+            }
+            ul{
+                margin: -3px 0px;
+            }
+            .content{
+                margin: 110px 20px 0px 20px;
+            }
+            button{
+                visibility: hidden;
+            }
+            .site_label{
+                left: 35vw
+            }
+            article{
+                vertical-align: text-top;
+                display: block;
+                padding: 10px;
+                margin: 10px 2px 10px 2px;
+                border-radius: 10px;
+            }
+            .article_double{
+                vertical-align: text-top;
+                display: inline-block;
+                padding: 10px;
+                width: calc(50% - 26px);
+                margin: 10px 2px 10px 2px;
+                border-radius: 10px;
+            }
+            section{
+                padding: 10px;
+                margin: 0px 10px;
+                border-radius: 10px;
+                margin: 0px 0px 10px 0px;
+            }
+        }
+        @media (min-width: 1024px) {
+            nav{
+                position: fixed;
+                top: 68px;
+                width: 200px;
+                height: 100%
+            }
+            .menu_item{
+                display: block;
+                margin: 3px 0px 3px 10px;
+            }
+            .sec{
+                margin: 0px 0px 0px 0px;
+            }
+            .site_label{
+                font-size: 3rem;
+                top: 10px;
+                left: 30vw;
+            }
+            .site_name{
+                width: 100%;
+                position: fixed;
+                top: 0%;
+                padding: 14px;
+            }
             
-        }
-        .menu_item {
-            display: inline-block;
-            background: #ffffff;
-            padding: 10px;
-            margin: 5px 20px;
-            width: 10;
-            border-radius: 10px;
-        }
-        body {
-            margin: 60px 0px 0px 0px ;
-            background: #e8f7ff;
-            font-family: "Open Sans";
-        }
-        ul {
-            margin: 0px;
-            padding: 0px;
-        }
-        article {
-            margin: 10px 40px;
-            background: white;
-            padding: 10px;
-            border: 1px solid;
-            border-color: #f0f0f0;
-            border-radius: 10px;
-        }
-        h1 {
-            text-align: center;
-            background: rgba(170, 235, 255, 0.4);
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 1.8rem;
-        }
-        .fact {
-            padding: 5px;
-            background: white;
-            transition: 1s;
-            border-radius: 10px;
-        }
-        .fact:hover {
-            background: #d9f5ff;
-            transition: 1s;
-        }
-        img {
-            border-radius: 10px;
-            max-height: 100%;
-            max-width: 100%;
-            min-height: 100%;
-            min-width: 100%;
-        }
-        p {
-            font-size: 1.4rem;
+            .content{
+                margin: 88px 20px 0px 220px;
+            }
+            article{
+                vertical-align: text-top;
+                display: block;
+                padding: 10px;
+                margin: 10px 2px 10px 2px;
+                border-radius: 10px;
+            }
+            .article_double{
+                vertical-align: text-top;
+                display: inline-block;
+                padding: 10px;
+                width: calc(50% - 26px);
+                margin: 10px 2px 10px 2px;
+                border-radius: 10px;
+            }
+            section{
+                padding: 10px;
+                margin: 0px 10px;
+                border-radius: 10px;
+                margin: 0px 0px 10px 0px;
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="menu">
-        <ul>
-            <li class="menu_item"><a href="#art1" class="menu_href">Факты о крови</a></li>
-            <li class="menu_item"><a href="#art2" class="menu_href">Факты о космосе</a></li>
-            <li class="menu_item"><a href="#art3" class="menu_href">Подборка фото НАСА</a></li>
-        </ul>
-    </nav>
-    
-    <article id="art1">
-        <header>
-            <h1>8 фактов о крови, которые вы могли не знать</h1>
-        </header>
-        <main>
-            <div class="fact">
-                <p>Карл Ландштейнер открыл группы крови в 1901 году, наблюдая, как сворачивается кровь разных людей при смешивании. Позже он классифицировал их как A, B и 0. Согласно этой системе, существует четыре группы крови: 0 (I), А (II), В (III) и АВ (IV).</p>
-                <img src="http://www.popmeh.ru/upload/iblock/523/1.jpg">
-            </div>
-            <div class="fact">
-                <p>Эта система не является уникальной. В настоящее время существует 33 системы классификации, признанные Международным обществом по переливанию крови, в том числе Лютеранская, Бомбейская, Даффи и даже «Ок».</p>
-                <img src="http://www.popmeh.ru/upload/iblock/c0e/2.jpg">
-            </div>
-            <div class="fact">
-                <p>Группа крови характеризуется различным набором молекул на поверхности красных кровяных клеток. Несоответствие этих молекул между донором и получателем может вызвать фатальную иммунную реакцию после переливания крови.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/a13/3.jpg">
-            </div>
-            <div class="fact">
-                <p>Некоторые группы крови являются очень редкими или существуют только в определенных этнических группах. Первая является наиболее распространенной по всему миру — ее обладателями являются около 45% населения. Кровь второй группы — самая распространенная среди европейцев, и ее обладателями являются 35% мирового населения. Третья группа встречается у 13%, людей а четвертая — у 7%.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/bf4/4.jpg">
-            </div>
-            <div class="fact">
-                <p>Четвертая группа крови (AB) является самой молодой и, по одной из версий, сформировалась в результате смешения индоевропейцев и монголоидов.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/87a/5.jpg">
-            </div>
-            <div class="fact">
-                <p>Группы крови не являются уникальной особенностью человека. Например, у собак их более десятка.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/162/6.jpg">
-            </div>
-            <div class="fact">
-                <p>Перед тем, как были открыты группы крови, врачи экспериментировали с переливанием между людьми и животными. В декабре 1667 года врач Жан-Батист Дени произвел переливание крови теленка человеку в попытке излечить того от психического заболевания. После второй процедуры переливания у пациента началась обильная рвота, боль в почках, а моча окрасилась в черный цвет. После третьего переливания мужчина умер. Дени осудили за убийство пациента, однако его оправдали, когда стало известно, что пациент был отравлен — но не кровью, а мышьяком.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/2a6/7.jpg">
-            </div>
-            <div class="fact">
-                <p>Гематофаги — существа, питающиеся кровью животных или человека. Таких видов насекомых насчитывается около 14 тысяч.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/e07/8.jpeg">
-            </div>
-        </main>
-    </article>
-    
-    <article id="art2">
-        <header>
-            <h1>10 любопытных фактов о космосе</h1>
-        </header>
-        <main>
-            <div class="fact">
-                <p>Маленькая белая точка на фото — наша планета, снятая зондом Voyager I. В 1990 году с расстояния 6 млрд км была сделана эта самая «далекая» изо всех фотографий Земли.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/fbf/1.jpg">
-            </div>
-            <div class="fact">
-                <p>Юпитер достаточно велик, чтобы вместить в себя тысячу планет размером с нашу Землю.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/ce4/2.jpg">
-            </div>
-            <div class="fact">
-                <p>Вокруг Земли вращается более 8 тысяч единиц космического мусора.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/956/3.jpg">
-            </div>
-            <div class="fact">
-                <p>Луч света от Солнца до Земли добирается всего за 8 минут, но фотону требуются сотни тысяч лет, чтобы добраться от ядра звезды к его поверхности.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/80c/4.jpg">
-            </div>
-            <div class="fact">
-                <p>99% массы Солнечной системы составляет масса Солнца.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/702/5.jpg">
-            </div>
-            <div class="fact">
-                <p>Если заплакать в космосе, слезы останутся на глазах и лице. </p>
-                <img src="http://www.popmeh.ru/upload/iblock/b0f/6.jpg">
-            </div>
-            <div class="fact">
-                <p>В космосе нет звуков, так как нет воздуха, в котором распространялись бы звуковые волны.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/542/7.jpg">
-            </div>
-            <div class="fact">
-                <p>Каждую минуту Земля пролетает 19 300 километров.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/91b/8.jpg">
-            </div>
-            <div class="fact">
-                <p>На планете HD189733b постоянно идет стеклянный дождь.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/203/9.jpg">
-            </div>
-            <div class="fact">
-                <p>Одни сутки на Венере длятся 224,7 «Земных» дня, то есть, более 7 месяцев.</p>
-                <img src="http://www.popmeh.ru/upload/iblock/a21/10.jpg">
-            </div>
-        </main>
-    </article>
-    
-    <article id="art3">
-        <header>
-            <h1>10 самых потрясающих космических фотографий НАСА</h1>
-        </header>
-        <main>
-            <div class="fact">
-                <p>Восход Земли (Earthrise), 1968. Один из самых известных снимков нашей планеты был сделан астронавтом Уильямом Андерсом во время облета Луны миссией «Аполлон-8». Космический корабль вышел на орбиту Луны в канун католического рождества, 24 декабря, и вел прямую трансляцию, которая, естественно, стала самой рейтинговой в праздничный вечер. Этот кадр прекрасно иллюстрирует не только космические просторы, но и эпоху, когда все отчаянно мечтали о покорении космоса и, в частности, были одержимы высадкой человека на Луну. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/399/3996a6033735108570575893a91a0d73.jpg">
-            </div>
-            <div class="fact">
-                <p>Голубой марбл (The Blue Marble), 1972. Этот кадр, сделанный 17 декабря 1972 года экипажем миссии «Аполлон-17», стал одним из самых знаменитых изображений Земли и породил целую серию последующих «марблов». Чтобы увидеть планету такой, космическому кораблю потребовалось отдалиться от ее поверхности на 29 тысяч км, что заняло 5 часов и 6 минут с момента запуска. Присмотритесь: Африка и Антарктида почти полностью освещены, а над Индийским океаном заметен циклон. После миссии «Аполлон-17» не совершалось пилотируемых полетов к Луне, поэтому на данный момент эта фотография остается последней, сделанной с такого расстояния от Земли рукой человека. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/ee2/ee2942b24adf0d140ebbef80fe43a339.jpg">
-            </div>
-            <div class="fact">
-                <p>Голубой марбл (The Blue Marble), 2012. Как по мотивам нашумевших фильмов снимают ремейки, так и некоторые изображения со временем обрастают новыми вариациями на заданную тему. Спустя 40 лет после появления снимка «Голубой марбл» НАСА представило миру фотографию западного полушария Земли, на которой легко различима Северная Америка. В отличие от «Голубого марбла» 1972-го года, снятого на 70-мм камеру с 80-мм объективом, этот снимок составной — своего рода компиляция данных, полученных с помощью спутника Suomi NPP. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/23b/23b8b897fe87acc4dce4d8f3d786259f.jpg">
-            </div>
-            <div class="fact">
-                <p>Черный марбл (The Black Marble), 2012. Еще один шедевр из серии «марблов». Изображение ночной Земли и одновременно яркое напоминание о том, насколько пребывание на планете человека меняет ее облик. Фотография, как и предыдущая, была создана с помощью спутника Suomi NPP. Процесс оказался технически трудным и напряженным, но благодаря ему была разработана целая система для создания ночных снимков Земли. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/2f4/2f425523a4c074404ab7412c144dac6f.jpg">
-            </div>
-            <div class="fact">
-                <p>«Столпы творения» (The Pillars of Creation), 1995. НАСА потратило 7 лет и миллиарды долларов на разработку и производство космического телескопа «Хаббл», который подарил нам множество бесценных снимков. Среди последних, безусловно, и «Столпы творения». На фотографии запечатлены скопления межзвездного газа и пыли в туманности Орел в созвездии Змеи, находящиеся на расстоянии примерно 7 тысяч световых лет от Земли. По версии некоторых ученых, облако образовалось от взрыва сверхновой звезды, который произошел около 6 тысяч лет назад. Если теория верна, то сами Столпы Творения уже не существуют, но из-за скорости света их разрушение мы сможем наблюдать лишь через тысячу лет. Еще одно напоминание о том, что в космосе все не только зрелищно, но и временно. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/277/27790ebce5f1b7b941966cf1ae5a21cf.jpg">
-            </div>
-            <div class="fact">
-                <p>Президентская панорама Марса (A Presidential Panorama of Mars), 1997. Точно такую картину увидел бы человек, высадись он на Марс вместо марсохода Mars Pathfinder. Если когда-нибудь на Марсе станут проводить экскурсии, наверняка они будут начинаться примерно так: «Перед вами окрестности Мемориальной станции имени Сагана (названной в честь астрофизика Карла Сагана), прямо по центру — камень Йоги, а слева от него вы можете наблюдать марсоход, исследующий поверхность планеты».</p>
-                <img src="http://www.popmeh.ru/upload/iblock/c7b/c7bff42a6fa680ae4d41304cbe417694.jpg">
-            </div>
-            <div class="fact">
-                <p>Челленджер (Challenger), 1986. Фотографии НАСА — это не только космическая поэзия, но и история покорения человеком космоса, порой трагическая. Этот снимок стал печально известен всему миру, запечатлев катастрофу космического челнока «Челленджер» в 1986 году, которая унесла жизни семи космонавтов на 73-ей секунде полета. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/5d6/5d610a80197bb5d4ba7771792c8f5ed8.jpg">
-            </div>
-            <div class="fact">
-                <p>Большое красное пятно Юпитера (Jupiter's Great Red Spot) — пример того, как за магической красотой космических объектов могут скрываться довольно страшные явления. Большое красное пятно Юпитера было открыто еще в 1665 году астрономом Джованни Кассини. На снимке оно выглядит словно некая геологическая особенность, но на деле не имеет никакого отношения к поверхности Юпитера, являясь самым большим атмосферным вихрем в Солнечной системе. Только подумайте: никогда не прекращающийся ураган, который, меняя цвет и размер, перемещается по экватору планеты. Площадь вихря — примерно 40 тысяч км на 13 тысяч км, а скорость ветра внутри него превышает 500 км/ч. Выглядит красиво. Но не хотелось бы оказать поблизости. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/125/125a3247f8b378e2111e886793e56b1d.jpg">
-            </div>
-            <div class="fact">
-                <p>Hubble Ultra-Deep Field (HUDF). Для создания этого изображения НАСА потребовались данные космического телескопа «Хаббл», собранные за неполные 5 месяцев в 2003—2004 годах. Цель изображения — далекие галактики, возникшие сразу после Большого Взрыва. Можете ли вы поверить: на фотографии, что перед вами, зафиксированы 10 тысяч различных галактик! На момент создания HUDF стал самым глубоким снимком космоса. </p>
-                <img src="http://www.popmech.ru/upload/medialibrary/399/399ee4e8f831f2bb8bdd0c3de2bae397.jpg">
-            </div>
-            <div class="fact">
-                <p>Базз Олдрин и Нил Армстронг, 20 июля 1969 года — культовый снимок миссии «Аполлон-11». Базз Олдрин, второй человек, ступивший на поверхность Луны, позирует перед объективом Нила Армстронга, который невольно отражается в шлеме астронавта. Фотография, которая стала легендарной и продолжает вдохновлять людей на подвиги, заставляя мечтать о том, что кажется недостижимым.</p>
-                <img src="http://www.popmech.ru/upload/medialibrary/a67/a6727b411a6601b9f9f676d1f244cf63.jpg">
-            </div>
-        </main>
-    </article>
+    <header>
+        <div class = "site_name">
+            <button id = "tog"></button>
+            <span class="site_label">AN ADAPTIVE SITE</span>
+        </div>
+        <nav id = "menu">
+            <ul>
+                <li class = "menu_item sec"><a href="#sec1">Section1</a></li>
+                    <li class = "menu_item"><a href="#s1a1">>>Art1</a></li>
+                    <li class = "menu_item"><a href="#s1a2">>>Art1</a></li>
+                <li class = "menu_item sec"><a href="#sec2">Section2</a></li>
+                    <li class = "menu_item"><a href="#s2a1">>>Art1</a></li>
+                    <li class = "menu_item"><a href="#s2a2">>>Art1</a></li>
+                    <li class = "menu_item"><a href="#s2s3">>>Art1</a></li>
+                <li class = "menu_item sec"><a href="#sec3">Section3</a></li>
+                    <li class = "menu_item"><a href="#s3a1">>>Art1</a></li>
+                    <li class = "menu_item"><a href="#s3a2">>>Art1</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class = "content">
+            <section id = "sec1">
+            <h1>SECTION ONE</h1>
+                <article id = "s1a1" class = "article_double">
+                    <header>
+                        <h2>
+                            ARTICLE ONE DOUBLE
+                        </h2>
+                    </header>
+                    <main>
+                        <p>
+                            TEXT ONE
+                        </p>
+                        <p>
+                            TEXT ONE
+                        </p> 
+                    </main>
+                    <footer>
+                    </footer>
+                </article>
+                <article id = "s1a2"  class = "article_double">
+                    <header>
+                        <h2>
+                            ARTICLE TWO DOUBLE
+                        </h2>
+                    </header>
+                    <main>
+                        <p>
+                            TEXT ONE
+                        </p>
+                        <p>
+                            TEXT ONE
+                        </p> 
+                    </main>
+                    <footer>
+                    </footer>
+                </article>
+            </section>
+            <section id = "sec2">
+            <h1>SECTION TWO</h1>
+                <article id = "s2a1"  class = "article_double">
+                    <header>
+                        <h2>
+                            ARTICLE ONE DOUBLE
+                        </h2>
+                    </header>
+                    <main>
+                        <p>
+                            TEXT ONE
+                        </p>
+                        <p>
+                            TEXT ONE
+                        </p> 
+                    </main>
+                    <footer>
+                    </footer>
+                </article>
+                <article id = "s2a2"  class = "article_double">
+                    <header>
+                        <h2>
+                            ARTICLE TWO DOUBLE
+                        </h2>
+                    </header>
+                    <main>
+                        <p>
+                            TEXT ONE
+                        </p>
+                        <p>
+                            TEXT ONE
+                        </p> 
+                    </main>
+                    <footer>
+                    </footer>
+                </article>
+                <article id = "s2a3" >
+                    <header>
+                        <h2>
+                            ARTICLE THREE SIMPLE
+                        </h2>
+                    </header>
+                    <main>
+                        <p>
+                            TEXT ONE
+                        </p>
+                        <p>
+                            TEXT ONE
+                        </p> 
+                    </main>
+                    <footer>
+                    </footer>
+                </article>
+            </section>
+            <section id = "sec3">
+            <h1>SECTION TWO</h1>
+                <article id = "s3a1" >
+                    <header>
+                        <h2>
+                            ARTICLE ONE SIMPLE
+                        </h2>
+                    </header>
+                    <main>
+                        <p>
+                            REAL NIGGAS
+                        </p>
+                        <p>
+                            REAL GUNS
+                        </p> 
+                    </main>
+                    <footer>
+                    </footer>
+                </article>
+                <article id = "s3a2" >
+                    <header>
+                        <h2>
+                            ARTICLE TWO SIMPLE
+                        </h2>
+                    </header>
+                    <main>
+                        <p>
+                            REAL NIGGAS
+                        </p>
+                        <p>
+                            REAL GUNS
+                        </p> 
+                    </main>
+                    <footer>
+                    </footer>
+                </article>
+            </section>
+        </div>
+    </main>
+    <footer>
+        
+    </footer>
+    <script>
+        tog.addEventListener('click', function(){
+            menu.classList.toggle('menu_vis');
+        });
+    </script>
 </body>
 </html>
