@@ -1,402 +1,426 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <title>Adaptive Site</title>
     <meta name="viewport" content="max-device-width">
-    <title>A-Site</title>
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Bungee|Concert+One|Copse|Macondo|Nunito|Patua+One|Ubuntu+Mono');
-        body{
-            margin: 0px;
+        html,
+        body {
+            margin: 0%;
             background: #01A2A6;
         }
-        p{
-            margin: 3px;
-            font-family: "Nunito";
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8.8vh;
+            background: #2F2933;
         }
-        h1{
-            font-family: "Patua One";
+        
+        .menu_toggle {
+            position: fixed;
+            top: 1.4vh;
+            left: 1.4vh;
+            width: 6vh;
+            height: 6vh;
+            background: url(https://edensprings.ru/images/mobile-menu-button.png) 10%/cover;
+            border: none;
         }
-        h2{
-            font-family: "Ubuntu Mono";
+        
+        .site_name {
+            margin: 0px auto 0px auto;
+            min-width: 80vh;
+            padding: 0px;
+            color: #FFFFA6;
+            font-size: 8vh;
+            text-align: center;
         }
-        a{
-            text-decoration: none;
+        
+        .menu {
+            position: fixed;
+            top: 8.8vh;
+            left: -40vw;
+            width: 40vw;
+            min-width: 150px;
+            height: 91.2vh;
+            border-radius: 0px 0px 50px 0px;
+            background: #1695A3;
+            transition: .5s;
         }
-        a:link{
-            color: #35203B;
+        
+        .menu_list {
+            padding: 0;
+            margin: 0;
         }
-        a:visited{
-            color: #35203B;
+        
+        .menu_item {
+            display: block;
+            margin: .4vh 30px;
+            padding: 1vh;
+            border-radius: 7px;
+            text-align: center;
+            background: #A5E84F;
+            transition: .5s;
         }
-        article:hover,.article_double:hover{
-            background: #d5f7a4;
+        
+        .menu_article {
+            margin: .4vh 40px;
+            background: #73E88B;
         }
-        .menu_item:hover{
+        
+        .menu_visible {
+            left: 0;
+        }
+        
+        .menu_item:hover {
             background: #6df4cf;
         }
         
-        nav{
-            width: 200px;
-            height: 100%;
-            
-            position: fixed;
-            
-            top: 46px;
-            left: -200px;
-            
-            background: #1695A3;
-            
-            transition: 0.5s;
+        .content {
+            margin: calc(8.8vh + 10px) 10px;
         }
-        .menu_vis{
-            left:0;
-        }
-        ul{
-            margin: 0;
+        
+        section {
+            margin: 10px 0px;
             padding: 10px;
-        }
-        .menu_item{
-            display: block;
-            background: #73E88B;
-            margin: 4px 0px 0px 10px;
-            padding: 9px;
             border-radius: 10px;
-            font-family: "Concert One";
-            transition: .5s;
-        }
-        .sec{
-            font-family: "Bungee";
-            background: #A5E84F;
-            padding: 0px 0px 0px 10px;
-            margin: 4px 0px 0px -5px;
-        }
-        
-        
-        .site_name{
-            height: 40px;
-            width: 100%;
-            position: fixed;
-            top: 0%;
-            background: #2F2933;
-            padding: 3px;
-        }
-        .site_label{
-            font-family: "Macondo";
-            color: #FFFFA6;
-            font-size: 2rem;
-            font-weight: 900;
-            position: absolute;
-            left: 60px;
-            top: 7px;
-            vertical-align: middle;
-        }
-        button{
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            border: none;
-            width: 25px;
-            height: 25px;
-            background:url(https://edensprings.ru/images/mobile-menu-button.png) 10%/cover;
-            color: white;
-        }
-        
-        
-        .content{
-            margin: 76px 20px 0px 20px;
-        }
-        section{
-            padding: 10px;
-            margin: 0px 10px;
             background: #29D9C2;
-            border-radius: 10px;
-            margin: 0px 0px 10px 0px;
         }
-        article{
-            vertical-align: text-top;
-            display: block;
-            padding: 10px;
-            margin: 10px 2px 10px 2px;
+        
+        article {
+            margin: 10px;
+            padding: 7px;
+            border-radius: 1vh;
             background: #BDF271;
-            border-radius: 10px;
-            transition: .5s;
-        }
-        .article_double{
-            vertical-align: text-top;
-            display: block;
-            padding: 10px;
-            width: auto;
-            margin: 10px 2px 10px 2px;
-            background: #BDF271;
-            border-radius: 10px;
             transition: .5s;
         }
         
-        @media (min-width: 1768px){
-            nav{
-                width: 100%;
-                height: 50px;
-                left: 0;
-            }
-            .menu_item{
-                font-size: 0.9rem;
-                display: inline-block;
-                vertical-align: middle;
-                margin: 5px auto auto 0px;
-                padding: 5px 10px 5px 10px;
-                border-radius: 10px;
-            }
-            .sec{
-                font-size: 0.7rem;
-                padding: 0px 10px 0px 10px;
-            }
-            ul{
-                margin: -3px 0px;
-            }
-            .content{
-                margin: 110px 20px 0px 20px;
-            }
-            button{
+        article:hover,
+        .article_double:hover {
+            background: #d5f7a4;
+        }
+        
+        a:link {
+            color: #35203B;
+        }
+        
+        a:visited {
+            color: #35203B;
+        }
+        
+        @media (min-width: 768px) {
+            html,
+            body {}
+            .header {}
+            .menu_toggle {
                 visibility: hidden;
             }
-            .site_label{
-                left: 35vw
+            .site_name {}
+            .menu {
+                left: 0;
+                width: 100vw;
+                height: auto;
+                border-radius: 0px;
             }
-            article{
-                vertical-align: text-top;
-                display: block;
+            .menu_list {
+                padding: 0;
+                margin: 0;
+            }
+            .menu_item {
+                display: inline-block;
+                vertical-align: middle;
+                margin: 2px 10px;
+                padding: 0.4vw;
+                border-radius: 5px;
+                text-align: center;
+            }
+            .menu_article {
+                margin: 0px 0px;
+                background: #73E88B;
+            }
+            li {
+                display: inline-block;
+            }
+            .menu_visible {
+                left: 0;
+            }
+            .content {
+                margin: calc(9.2vh + 70px) 10px;
+            }
+            section {}
+            article {
+                margin: 10px 2px;
                 padding: 10px;
-                margin: 10px 2px 10px 2px;
-                border-radius: 10px;
+                border-radius: 5px;
+                background: #BDF271;
             }
-            .article_double{
+            .article_double {
                 vertical-align: text-top;
                 display: inline-block;
                 padding: 10px;
                 width: calc(50% - 26px);
-                margin: 10px 2px 10px 2px;
-                border-radius: 10px;
-            }
-            section{
-                padding: 10px;
-                margin: 0px 10px;
-                border-radius: 10px;
-                margin: 0px 0px 10px 0px;
+                margin: 10px 2px;
             }
         }
-        @media (min-width: 2024px) {
-            nav{
+        
+        @media (min-width: 1024px) {
+            html,
+            body {
+                margin: 0%;
+            }
+            .header {
                 position: fixed;
-                top: 68px;
-                width: 200px;
-                height: 100%
-            }
-            .menu_item{
-                display: block;
-                margin: 3px 0px 3px 10px;
-            }
-            .sec{
-                margin: 0px 0px 0px 0px;
-            }
-            .site_label{
-                font-size: 3rem;
-                top: 10px;
-                left: 30vw;
-            }
-            .site_name{
+                top: 0;
+                left: 0;
                 width: 100%;
+                height: 8.8vh;
+            }
+            .menu_toggle {}
+            .site_name {
+                margin: 0px auto 0px auto;
+                min-width: 80vh;
+                padding: 0px;
+                font-size: 8vh;
+                text-align: center;
+            }
+            .menu {
                 position: fixed;
-                top: 0%;
-                padding: 14px;
+                top: 8.8vh;
+                left: 0vw;
+                width: 20vw;
+                max-width: 300px;
+                height: 91.2vh;
+                transition: .5s;
             }
-            
-            .content{
-                margin: 88px 20px 0px 220px;
+            .menu_list {
+                padding: 0;
+                margin: 0;
             }
-            article{
-                vertical-align: text-top;
+            .menu_item {
                 display: block;
-                padding: 10px;
-                margin: 10px 2px 10px 2px;
-                border-radius: 10px;
+                margin: .4vh 30px;
+                padding: 1vh 5vw;
+                border-radius: 8px;
+                text-align: center;
             }
-            .article_double{
-                vertical-align: text-top;
-                display: inline-block;
-                padding: 10px;
-                width: calc(50% - 26px);
-                margin: 10px 2px 10px 2px;
-                border-radius: 10px;
+            .menu_article {
+                margin: .4vh 40px;
             }
-            section{
-                padding: 10px;
-                margin: 0px 10px;
-                border-radius: 10px;
-                margin: 0px 0px 10px 0px;
+            .menu_visible {}
+            .content {
+                min-width: 790px;
+                margin: calc(8.8vh + 10px) calc(20vh) calc(8.8vh + 10px) calc(20vw + 8px);
             }
+            section {}
+            article {}
         }
     </style>
 </head>
+
 <body>
     <header>
-        <div class = "site_name">
-            <button id = "tog"></button>
-            <span class="site_label">AN ADAPTIVE SITE</span>
+        <div class="header">
+            <button class="menu_toggle" id="menu_toggle"></button>
+            <div class="site_name">ADAPTIVE SITE</div>
         </div>
-        <nav id = "menu">
-            <ul>
-                <li class = "menu_item sec"><a href="#sec1">Section1</a></li>
-                    <li class = "menu_item"><a href="#s1a1">>>Art1</a></li>
-                    <li class = "menu_item"><a href="#s1a2">>>Art1</a></li>
-                <li class = "menu_item sec"><a href="#sec2">Section2</a></li>
-                    <li class = "menu_item"><a href="#s2a1">>>Art1</a></li>
-                    <li class = "menu_item"><a href="#s2a2">>>Art1</a></li>
-                    <li class = "menu_item"><a href="#s2s3">>>Art1</a></li>
-                <li class = "menu_item sec"><a href="#sec3">Section3</a></li>
-                    <li class = "menu_item"><a href="#s3a1">>>Art1</a></li>
-                    <li class = "menu_item"><a href="#s3a2">>>Art1</a></li>
+        <div class="menu" id="menu">
+            <ul class="menu_list">
+                <li>
+                    <div class="menu_item menu_section"><a href="#sec1">Section1</a></div>
+                    <div class="menu_item menu_article"><a href="#s1a1">Article1</a></div>
+                    <div class="menu_item menu_article"><a href="#s1a2">Article2</a></div>
+                    <div class="menu_item menu_article"><a href="#s1a3">Article3</a></div>
+                </li>
+                <li>
+                    <div class="menu_item menu_section"><a href="#sec2">Section2</a></div>
+                    <div class="menu_item menu_article"><a href="#s2a1">Article1</a></div>
+                    <div class="menu_item menu_article"><a href="#s2a2">Article2</a></div>
+                    <div class="menu_item menu_article"><a href="#s2a3">Article3</a></div>
+                </li>
+                <li>
+                    <div class="menu_item menu_section"><a href="#sec3">Section3</a></div>
+                    <div class="menu_item menu_article"><a href="#s3a1">Article1</a></div>
+                    <div class="menu_item menu_article"><a href="#s3a2">Article2</a></div>
+                    <div class="menu_item menu_article"><a href="#s3a3">Article3</a></div>
+                </li>
+                <li>
+                    <div class="menu_item menu_section"><a href="#sec4">Section4</a></div>
+                    <div class="menu_item menu_article"><a href="#s4a1">Article1</a></div>
+                    <div class="menu_item menu_article"><a href="#s4a2">Article2</a></div>
+                    <div class="menu_item menu_article"><a href="#s4a3">Article3</a></div>
+                </li>
             </ul>
-        </nav>
-    </header>
-    <main>
-        <div class = "content">
-            <section id = "sec1">
-            <h1>SECTION ONE</h1>
-                <article id = "s1a1" class = "article_double">
-                    <header>
-                        <h2>
-                            ARTICLE ONE DOUBLE
-                        </h2>
-                    </header>
-                    <main>
-                        <p>
-                            TEXT ONE
-                        </p>
-                        <p>
-                            TEXT ONE
-                        </p> 
-                    </main>
-                    <footer>
-                    </footer>
-                </article>
-                <article id = "s1a2"  class = "article_double">
-                    <header>
-                        <h2>
-                            ARTICLE TWO DOUBLE
-                        </h2>
-                    </header>
-                    <main>
-                        <p>
-                            TEXT ONE
-                        </p>
-                        <p>
-                            TEXT ONE
-                        </p> 
-                    </main>
-                    <footer>
-                    </footer>
-                </article>
-            </section>
-            <section id = "sec2">
-            <h1>SECTION TWO</h1>
-                <article id = "s2a1"  class = "article_double">
-                    <header>
-                        <h2>
-                            ARTICLE ONE DOUBLE
-                        </h2>
-                    </header>
-                    <main>
-                        <p>
-                            TEXT ONE
-                        </p>
-                        <p>
-                            TEXT ONE
-                        </p> 
-                    </main>
-                    <footer>
-                    </footer>
-                </article>
-                <article id = "s2a2"  class = "article_double">
-                    <header>
-                        <h2>
-                            ARTICLE TWO DOUBLE
-                        </h2>
-                    </header>
-                    <main>
-                        <p>
-                            TEXT ONE
-                        </p>
-                        <p>
-                            TEXT ONE
-                        </p> 
-                    </main>
-                    <footer>
-                    </footer>
-                </article>
-                <article id = "s2a3" >
-                    <header>
-                        <h2>
-                            ARTICLE THREE SIMPLE
-                        </h2>
-                    </header>
-                    <main>
-                        <p>
-                            TEXT ONE
-                        </p>
-                        <p>
-                            TEXT ONE
-                        </p> 
-                    </main>
-                    <footer>
-                    </footer>
-                </article>
-            </section>
-            <section id = "sec3">
-            <h1>SECTION TWO</h1>
-                <article id = "s3a1" >
-                    <header>
-                        <h2>
-                            ARTICLE ONE SIMPLE
-                        </h2>
-                    </header>
-                    <main>
-                        <p>
-                            REAL NIGGAS
-                        </p>
-                        <p>
-                            REAL GUNS
-                        </p> 
-                    </main>
-                    <footer>
-                    </footer>
-                </article>
-                <article id = "s3a2" >
-                    <header>
-                        <h2>
-                            ARTICLE TWO SIMPLE
-                        </h2>
-                    </header>
-                    <main>
-                        <p>
-                            REAL NIGGAS
-                        </p>
-                        <p>
-                            REAL GUNS
-                        </p> 
-                    </main>
-                    <footer>
-                    </footer>
-                </article>
-            </section>
         </div>
-    </main>
-    <footer>
-        
-    </footer>
+    </header>
+    <div class="content">
+        <main>
+            <section>
+                <div class="section_header" id="sec1">SECTION 1</div>
+                <article class="article_double">
+                    <header>
+                        <span class="article_header" id="s1a1">ARTICLE 1D</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article class="article_double">
+                    <header>
+                        <span class="article_header" id="s1a2">ARTICLE 2D</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article>
+                    <header>
+                        <span class="article_header" id="s1a3">ARTICLE 3</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+            </section>
+            <section>
+                <div class="section_header" id="sec2">SECTION 1</div>
+                <article>
+                    <header>
+                        <span class="article_header" id="s2a1">ARTICLE 1</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article class="article_double">
+                    <header>
+                        <span class="article_header" id="s2a2">ARTICLE 2D</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article class="article_double">
+                    <header>
+                        <span class="article_header" id="s2a3">ARTICLE 3D</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+            </section>
+            <section>
+                <div class="section_header" id="sec3">SECTION 1</div>
+                <article>
+                    <header>
+                        <span class="article_header" id="s3a1">ARTICLE 1</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article>
+                    <header>
+                        <span class="article_header" id="s3a2">ARTICLE 2</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article>
+                    <header>
+                        <span class="article_header" id="s3a3">ARTICLE 3</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+            </section>
+            <section>
+                <div class="section_header" id="sec4">SECTION 1</div>
+                <article class="article_double">
+                    <header>
+                        <span class="article_header" id="s4a1">ARTICLE 1D</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article class="article_double">
+                    <header>
+                        <span class="article_header" id="s4a2">ARTICLE 2D</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+                <article>
+                    <header>
+                        <span class="article_header" id="s4a3">ARTICLE 3</span>
+                    </header>
+                    <main>
+                        <p>TEXT ONE</p>
+                        <p>TEXT TWO</p>
+                        <p>TEXT THREE</p>
+                        <p>TEXT FOUR</p>
+                        <p>TEXT FIVE</p>
+                    </main>
+                </article>
+            </section>
+        </main>
+        <footer>
+        </footer>
+    </div>
     <script>
-        tog.addEventListener('click', function(){
-            menu.classList.toggle('menu_vis');
+        menu_toggle.addEventListener('click', function() {
+            menu.classList.toggle('menu_visible');
         });
     </script>
 </body>
