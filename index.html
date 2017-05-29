@@ -1,427 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <title>Adaptive Site</title>
-    <meta name="viewport" content="max-device-width">
-    <style>
-        html,
-        body {
-            margin: 0%;
-            background: #01A2A6;
-        }
-        
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8.8vh;
-            background: #2F2933;
-        }
-        
-        .menu_toggle {
-            position: fixed;
-            top: 1.4vh;
-            left: 1.4vh;
-            width: 6vh;
-            height: 6vh;
-            background: url(https://edensprings.ru/images/mobile-menu-button.png) 10%/cover;
-            border: none;
-        }
-        
-        .site_name {
-            margin: 0px auto 0px auto;
-            min-width: 80vh;
-            padding: 0px;
-            color: #FFFFA6;
-            font-size: 8vh;
-            text-align: center;
-        }
-        
-        .menu {
-            position: fixed;
-            top: 8.8vh;
-            left: -40vw;
-            width: 40vw;
-            min-width: 150px;
-            height: 91.2vh;
-            border-radius: 0px 0px 50px 0px;
-            background: #1695A3;
-            transition: .5s;
-        }
-        
-        .menu_list {
-            padding: 0;
-            margin: 0;
-        }
-        
-        .menu_item {
-            display: block;
-            margin: .4vh 30px;
-            padding: 1vh;
-            border-radius: 7px;
-            text-align: center;
-            background: #A5E84F;
-            transition: .5s;
-        }
-        
-        .menu_article {
-            margin: .4vh 40px;
-            background: #73E88B;
-        }
-        
-        .menu_visible {
-            left: 0;
-        }
-        
-        .menu_item:hover {
-            background: #6df4cf;
-        }
-        
-        .content {
-            margin: calc(8.8vh + 10px) 10px;
-        }
-        
-        section {
-            margin: 10px 0px;
-            padding: 10px;
-            border-radius: 10px;
-            background: #29D9C2;
-        }
-        
-        article {
-            margin: 10px;
-            padding: 7px;
-            border-radius: 1vh;
-            background: #BDF271;
-            transition: .5s;
-        }
-        
-        article:hover,
-        .article_double:hover {
-            background: #d5f7a4;
-        }
-        
-        a:link {
-            color: #35203B;
-        }
-        
-        a:visited {
-            color: #35203B;
-        }
-        
-        @media (min-width: 768px) {
-            html,
-            body {}
-            .header {}
-            .menu_toggle {
-                visibility: hidden;
-            }
-            .site_name {}
-            .menu {
-                left: 0;
-                width: 100vw;
-                height: auto;
-                border-radius: 0px;
-            }
-            .menu_list {
-                padding: 0;
-                margin: 0;
-            }
-            .menu_item {
-                display: inline-block;
-                vertical-align: middle;
-                margin: 2px 10px;
-                padding: 0.4vw;
-                border-radius: 5px;
-                text-align: center;
-            }
-            .menu_article {
-                margin: 0px 0px;
-                background: #73E88B;
-            }
-            li {
-                display: inline-block;
-            }
-            .menu_visible {
-                left: 0;
-            }
-            .content {
-                margin: calc(9.2vh + 70px) 10px;
-            }
-            section {}
-            article {
-                margin: 10px 2px;
-                padding: 10px;
-                border-radius: 5px;
-                background: #BDF271;
-            }
-            .article_double {
-                vertical-align: text-top;
-                display: inline-block;
-                padding: 10px;
-                width: calc(50% - 26px);
-                margin: 10px 2px;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            html,
-            body {
-                margin: 0%;
-            }
-            .header {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 8.8vh;
-            }
-            .menu_toggle {}
-            .site_name {
-                margin: 0px auto 0px auto;
-                min-width: 80vh;
-                padding: 0px;
-                font-size: 8vh;
-                text-align: center;
-            }
-            .menu {
-                position: fixed;
-                top: 8.8vh;
-                left: 0vw;
-                width: 20vw;
-                max-width: 300px;
-                height: 91.2vh;
-                transition: .5s;
-            }
-            .menu_list {
-                padding: 0;
-                margin: 0;
-            }
-            .menu_item {
-                display: block;
-                margin: .4vh 30px;
-                padding: 1vh 5vw;
-                border-radius: 8px;
-                text-align: center;
-            }
-            .menu_article {
-                margin: .4vh 40px;
-            }
-            .menu_visible {}
-            .content {
-                min-width: 790px;
-                margin: calc(8.8vh + 10px) calc(20vh) calc(8.8vh + 10px) calc(20vw + 8px);
-            }
-            section {}
-            article {}
-        }
-    </style>
+    <link href="style.css" rel="stylesheet">
+    <title>CyberS</title>
 </head>
 
 <body>
     <header>
-        <div class="header">
-            <button class="menu_toggle" id="menu_toggle"></button>
-            <div class="site_name">ADAPTIVE SITE</div>
-        </div>
-        <div class="menu" id="menu">
-            <ul class="menu_list">
-                <li>
-                    <div class="menu_item menu_section"><a href="#sec1">Section1</a></div>
-                    <div class="menu_item menu_article"><a href="#s1a1">Article1</a></div>
-                    <div class="menu_item menu_article"><a href="#s1a2">Article2</a></div>
-                    <div class="menu_item menu_article"><a href="#s1a3">Article3</a></div>
-                </li>
-                <li>
-                    <div class="menu_item menu_section"><a href="#sec2">Section2</a></div>
-                    <div class="menu_item menu_article"><a href="#s2a1">Article1</a></div>
-                    <div class="menu_item menu_article"><a href="#s2a2">Article2</a></div>
-                    <div class="menu_item menu_article"><a href="#s2a3">Article3</a></div>
-                </li>
-                <li>
-                    <div class="menu_item menu_section"><a href="#sec3">Section3</a></div>
-                    <div class="menu_item menu_article"><a href="#s3a1">Article1</a></div>
-                    <div class="menu_item menu_article"><a href="#s3a2">Article2</a></div>
-                    <div class="menu_item menu_article"><a href="#s3a3">Article3</a></div>
-                </li>
-                <li>
-                    <div class="menu_item menu_section"><a href="#sec4">Section4</a></div>
-                    <div class="menu_item menu_article"><a href="#s4a1">Article1</a></div>
-                    <div class="menu_item menu_article"><a href="#s4a2">Article2</a></div>
-                    <div class="menu_item menu_article"><a href="#s4a3">Article3</a></div>
-                </li>
+        <div class="menu">
+            <ul class="menu_container">
+                <li class="menu_item home"><a href="index.html">ГЛАВНАЯ</a></li>
+                <li class="menu_item"><a href="pages/history.html">ИСТОРИЯ</a></li>
+                <li class="menu_item"><a href="pages/about.html">О ПРОЕКТЕ</a></li>
             </ul>
         </div>
     </header>
-    <div class="content">
-        <main>
+    <main>
+        <div class="container">
             <section>
-                <div class="section_header" id="sec1">SECTION 1</div>
-                <article class="article_double">
-                    <header>
-                        <span class="article_header" id="s1a1">ARTICLE 1D</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article class="article_double">
-                    <header>
-                        <span class="article_header" id="s1a2">ARTICLE 2D</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article>
-                    <header>
-                        <span class="article_header" id="s1a3">ARTICLE 3</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
+                <div class="head_text">
+                    Киберспорт
+                </div>
+                <div class="underhead_text">
+                    - вид соревновательной деятельности и специальной практики подготовки к соревнованиям на основе компьютерных и/или видеоигр, где игра предоставляет среду взаимодействия объектов управления, обеспечивая равные условия состязаний человека с человеком или команды с командой.
+                </div>
             </section>
             <section>
-                <div class="section_header" id="sec2">SECTION 1</div>
-                <article>
-                    <header>
-                        <span class="article_header" id="s2a1">ARTICLE 1</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article class="article_double">
-                    <header>
-                        <span class="article_header" id="s2a2">ARTICLE 2D</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article class="article_double">
-                    <header>
-                        <span class="article_header" id="s2a3">ARTICLE 3D</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
+                <div class="text_box_left">
+                    Сейчас трудно не согласиться с тем, что киборспорт оказывает большре значение для современный культуры. Конечно, когда призовые фонды могут достигать нескольких миллионов долларов. Например, на турнире по Dota 2 «The International 2016» было разыграно 20 770 460 долларов США.
+                </div>
+                <div class="image">
+                </div>
             </section>
             <section>
-                <div class="section_header" id="sec3">SECTION 1</div>
-                <article>
-                    <header>
-                        <span class="article_header" id="s3a1">ARTICLE 1</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article>
-                    <header>
-                        <span class="article_header" id="s3a2">ARTICLE 2</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article>
-                    <header>
-                        <span class="article_header" id="s3a3">ARTICLE 3</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
+                <div class="image_left">
+                </div>
+                <div class="text_box_right">
+                    В данный момент киберспортивная индустрия активно поддерживается не только фанатами, но и даже правительством и коммерческими компаниями. Так, совмесно с YOTA открылся киберспортивный развлекательный комплекс - Yota Arena!
+                </div>
+
+            </section>
+            <section class="threeblock_section">
+                <div class="blocks">
+                    <a href="http://ru.dota2.com/">
+                        <div class="threeblock_block" id="bl1"></div>
+                    </a>
+                    <a href="https://csgo.com/">
+                        <div class="threeblock_block" id="bl2"></div>
+                    </a>
+                    <a href="http://ru.leagueoflegends.com/">
+                        <div class="threeblock_block" id="bl3"></div>
+                    </a>
+                </div>
+                <div class="fullwidth_text">
+                    Киберспортивные соревнования чаще всего проходят в очень популярных играх. Таких как: Dota 2, CounterStrike: Counter Strike Global Offensive, League of Legends. Конечно, названия популярных игр для проведения соревнований этим списком не ограничиваются.
+                </div>
             </section>
             <section>
-                <div class="section_header" id="sec4">SECTION 1</div>
-                <article class="article_double">
-                    <header>
-                        <span class="article_header" id="s4a1">ARTICLE 1D</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article class="article_double">
-                    <header>
-                        <span class="article_header" id="s4a2">ARTICLE 2D</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
-                <article>
-                    <header>
-                        <span class="article_header" id="s4a3">ARTICLE 3</span>
-                    </header>
-                    <main>
-                        <p>TEXT ONE</p>
-                        <p>TEXT TWO</p>
-                        <p>TEXT THREE</p>
-                        <p>TEXT FOUR</p>
-                        <p>TEXT FIVE</p>
-                    </main>
-                </article>
+                <div class="multitext_container">
+                    <div class="left_img"></div>
+                    <div class="right_text">
+                        Киберспортсмен нуждается в ряде навыков, в основном, конечно же, интеллектуальных. Это реакция, мелкая моторика пальцев, умение мыслить нестандартно также не является лишним. Чтобы играть в день множество часов напролет (и при том постоянно играть не на интерес, а оттачивать навыки) нужна очень крепкая психика.
+                    </div>
+                </div>
+                <div>
+                    <div class="left_text">
+                        Я на собственном примере могу сказать: сыграть пять игр в CS:GO не так просто, как кажется. Я имею ввиду полноценные игры с командой, а не обычные быстротечные одиночные раунды. Получается, некоторый фактор выносливости так же играет немалую роль.
+                    </div>
+                    <div class="right_img"></div>
+                </div>
             </section>
-        </main>
-        <footer>
-        </footer>
-    </div>
-    <script>
-        menu_toggle.addEventListener('click', function() {
-            menu.classList.toggle('menu_visible');
-        });
-    </script>
+        </div>
+    </main>
+    <footer>
+        <div class="footer">
+            <p>
+                Автор: <a href="https://vk.com/silkslime">Панфилкин Артём Михайлович</a>
+            </p>
+            <p>
+                Дата: Май 2017 года
+            </p>
+            <p>
+                Проект выполнен при поддержке <a href="https://informatics.ru/">МШП</a>
+            </p>
+            <p><img src="https://informatics.ru/images/ico/svg/Logo.svg" alt="logo"></p>
+        </div>
+    </footer>
 </body>
+
 </html>

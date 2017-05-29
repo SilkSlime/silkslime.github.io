@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Russo+One');
+
+/*font-family: 'Russo One', sans-serif;
+//font-family: 'Roboto', sans-serif;*/
+
+html,
+body {
+    margin: 0;
+    background: rgba(0, 9, 60, 1) url(src/bg.png);
+}
+
+.container {
+    margin: 15vh 0 0 0;
+}
+
+section {
+    height: 85vh;
+    background: rgba(0, 0, 116, 0.33);
+    border: 1px solid rgba(0, 0, 0, 0);
+    transition: 1.5s;
+}
+
+section:hover {
+    background: rgba(0, 0, 65, 0.88);
+}
+
+.head_text {
+    color: hsl(51, 100%, 48%);
+    background: rgba(10, 0, 255, 0.34);
+    border-radius: 0px 30px;
+    width: 50vw;
+    margin: 16vh 0vh 0vh 5vh;
+    padding: 5vh;
+    font-family: "Russo One";
+    font-size: 7.9vw;
+    text-align: center;
+}
+
+.underhead_text {
+    border: 10px hsl(51, 100%, 48%) double;
+    border-radius: 0 60px;
+    color: #fcffba;
+    background: rgba(0, 108, 255, 0.44);
+    width: 60vw;
+    margin: 0vh 25vw 0vh 15vw;
+    padding: 1vh;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 2vw;
+}
+
+.threeblock_block {
+    margin: 15vh 0px 0px 5vw;
+    height: 25vh;
+    width: 25vw;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: calc( ( 12.5vh + 12.5vw) / 2.5);
+    background: #5c01ed;
+    display: inline-block;
+}
+
+.threeblock_block:hover {
+    border: 2px solid orange;
+}
+
+#bl1 {
+    background: rgba(124, 194, 255, 0.21) url("src/dota2.png")50%/cover;
+}
+
+#bl2 {
+    background: rgba(124, 194, 255, 0.21) url("src/cslogo.png")50%/cover;
+}
+
+#bl3 {
+    background: rgba(124, 194, 255, 0.21) url("src/lol.png")50%/cover;
+}
+
+.fullwidth_text {
+    border-radius: 40px;
+    background: rgba(0, 9, 116, 0.54);
+    color: #b2e7ff;
+    padding: 35px;
+    margin: 30px;
+    text-align: center;
+    font-size: 1.6rem;
+    font-family: Roboto;
+}
+
+.menu {
+    top: 0;
+    width: 100vw;
+    height: 15vh;
+    min-height: 100px;
+    background: #181a21;
+    position: fixed;
+}
+
+.menu_container {}
+
+.menu_item {
+    background: rgb(35, 85, 221);
+    display: inline-block;
+    margin: 2.5vh 0px 0px 0px;
+    padding: 14px;
+    font-family: "Russo One";
+    color: #b3e5ff;
+}
+
+.home {
+    background: hsl(51, 100%, 48%);
+    color: black;
+    font-family: "Russo One"
+}
+
+.text_box_left {
+    display: inline-block;
+    margin: 15vh 0px 0px 8vw;
+    width: 40vw;
+    border-radius: 10px;
+    height: 60vh;
+    background: ;
+    font-size: 1.5rem;
+    border: 1px rgba(255, 255, 255, 0) solid;
+    background: rgba(0, 9, 116, 0.54);
+    color: #b2e7ff;
+    text-align: center;
+    font-family: "Russo One";
+}
+
+.text_box_right {
+    background: rgba(0, 9, 116, 0.54);
+    border-radius: 10px;
+    display: inline-block;
+    margin: 0vh 0px 0px 5vw;
+    width: 40vw;
+    height: 60vh;
+    font-size: 1.5rem;
+    color: #b2e7ff;
+    text-align: center;
+    font-family: "Russo One";
+}
+
+.image {
+    vertical-align: bottom;
+    margin: 0px 0px 0px 5vw;
+    height: 60vh;
+    width: 35vw;
+    background: white url("src/win.jpg")57%/cover;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.image_left {
+    border-radius: 10px;
+    vertical-align: bottom;
+    margin: 15vh 0px 0px 8vw;
+    height: 60vh;
+    width: 35vw;
+    background: white url("src/stadium.jpg")50%/cover;
+    display: inline-block;
+}
+
+.left_img {
+    vertical-align: bottom;
+    margin: 0vw 5vw;
+    display: inline-block;
+    background: #fff url("src/pasha.jpg")100%/cover;
+    border-radius: 10px;
+    height: 30vh;
+    width: 40vw;
+}
+
+.right_text {
+    border-radius: 10px;
+    vertical-align: bottom;
+    display: inline-block;
+    padding: 14px;
+    color: #b2e7ff;
+    background: rgba(0, 9, 116, 0.54);
+    height: 30vh;
+    width: 40vw;
+    font-size: calc( (1vh + 1vw));
+    text-align: center;
+    font-family: Roboto;
+}
+
+.left_text {
+    margin: 0vw 5vw;
+    border-radius: 10px;
+    vertical-align: bottom;
+    display: inline-block;
+    padding: 14px;
+    font-size: calc( (1vh + 1vw));
+    color: #b2e7ff;
+    background: rgba(0, 9, 116, 0.54);
+    height: 30vh;
+    width: 40vw;
+    text-align: center;
+    font-family: Roboto;
+}
+
+.right_img {
+    display: inline-block;
+    background: #fff url("src/train.jpg")40%/cover;
+    border-radius: 10px;
+    height: 30vh;
+    width: 40vw;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 5px 50px 5px 50px;
+    color: #b2e7ff;
+    font-family: "Russo One";
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+    background: rgba(0, 9, 116, 0.84);
+}
+
+h2 {}
+
+h3 {}
+
+p {
+    font-family: "Roboto";
+    font-size: calc( (1vh + 1vw) / 1.17);
+}
+
+.multitext_container {
+    margin: 9vh 0px 3vh 0px;
+}
+
+.footer {
+    height: 30vh;
+    background: rgb(72, 0, 0);
+}
+.footer>p{
+    padding: 20px 4px 0px 0px;
+    font-size: 0.6rem;
+}
