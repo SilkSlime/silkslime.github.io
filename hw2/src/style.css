@@ -1,0 +1,20 @@
+html{
+    background-color: lightgoldenrodyellow;
+}
+h2{
+    color: darkgreen;
+    background-color: aquamarine;
+}
+p{
+    color: blue;
+    background-color: darkseagreen;
+}
+.beauty{
+    color: lightcoral;
+    background-color: navy;
+}
+#mytable{
+    color: white;
+    background-color: black;
+    border: 10px outset red;
+}
