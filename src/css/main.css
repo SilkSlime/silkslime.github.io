@@ -1,21 +1,16 @@
 body{
 /*    background-image: url(http://www.gsfdcy.com/data/img/11/1233412-blue-grey-wallpaper.jpg);*/
-}
-.container{
+    background: linear-gradient(327deg, #000e6f, #6f00a7, #0086ff, #9e006a, #007a13);
+    background-size: 1000% 1000%;
+
+    animation: AnimationName 21s ease infinite;
 }
 
 html, body {
   height: 100%;
 }
-
-canvas{
-    position: absolute;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  width: 100%;
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
-}
-
