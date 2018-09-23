@@ -8,61 +8,77 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <style>
-        body{
-            background-image: url(http://www.gsfdcy.com/data/img/11/1233412-blue-grey-wallpaper.jpg);
-        }
-        .container{
-        }
-    </style>
+    <link rel="stylesheet" href="src/style.css">
     <title>SilkSlime base site</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand text-light">Welcome to SilkSlime semi-lib!</a>
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" disabled type="search" placeholder="@silkslime" aria-label="Search">
-        </form>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">SilkSlime.lib</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Seminars
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#sem4">Seminar 4 <span class="badge badge-pill badge-primary">New!</span></a>
+                        <a class="dropdown-item" href="#sem3">Seminar 3</a>
+                        <a class="dropdown-item" href="#sem2">Seminar 2</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">A$AP...</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">@silkslimelive</a>
+                </li>
+            </ul>
+        </div>
     </nav>
+    
     <div class="container mt-3">
-        <div class="card text-white bg-dark mb-3">
+        
+        <div class="card text-white bg-dark mb-3" id="sem4">
             <div class="card-header">
-                <h4>Семинар 2. Основы HTML</h4>
+                <h4>Семинар 4. CSS Box Model <span class="badge badge-pill badge-primary">New!</span></h4>
             </div>
             <div class="card-body">
                 <h5 class="card-title">
-                    Цель работы: изучить основы языка HTML.
+                    Цель работы: научиться задавать размеры HTML-элементов при помощи CSS.
                 </h5>
-                <ul class="list-group list-group-flush">
+                <ul class="list-group">
                     <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">Hello World!</span>
-                        <a href="./hw1/hello.html" class="btn btn-primary">hello.html</a>
+                        <span class="mr-3">Задание 1</span>
+                        <a href="hw3/e1.html" class="btn btn-success">e1.html</a>
                     </li>
                     <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">Text HTML</span>
-                        <a href="./hw1/text.html" class="btn btn-primary">text.html</a>
+                        <span class="mr-3">Задание 2</span>
+                        <a href="hw3/e2.html" class="btn btn-success">e2.html</a>
                     </li>
                     <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">List HTML</span>
-                        <a href="./hw1/list.html" class="btn btn-primary">list.html</a>
-                    </li>
-                    <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">table HTML</span>
-                        <a href="./hw1/table.html" class="btn btn-primary">table.html</a>
-                    </li>
-                    <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">menu HTML</span>
-                        <a href="./hw1/menu.html" class="btn btn-primary">menu.html</a>
+                        <span class="mr-3">Задание 3</span>
+                        <a href="hw3/e3.html" class="btn btn-success">e3.html</a>
                     </li>
                 </ul>
             </div>
             <div class="card-footer">
                 <h6>Ответы на вопросы:</h6>
+                <ol>
+                    <li>CSS - Cascading Style Sheets — каскадные таблицы стилей</li>
+                    <li>Отдельным файлом, в тэге style в head, атрибутом элемента</li>
+                    <li>Общий шаблон стиля, применимый к нескольким элементом сразу</li>
+                    <li>Уникальный шаблон стиля, применимый к одному уникальному элементу</li>
+                    <li>Написание каскадных таблиц стилей</li>
+                    <li>Файл, style-head, inline-атрибут</li>
+                </ol>
             </div>
         </div>
         
-        <div class="card text-white bg-dark mb-3">
+        <div class="card text-white bg-dark mb-3" id="sem3">
             <div class="card-header">
                 <h4>Семинар 3. Основы CSS</h4>
             </div>
@@ -70,10 +86,10 @@
                 <h5 class="card-title">
                     Цель работы: научиться задавать оформление HTML документов средствами CSS.
                 </h5>
-                <ul class="list-group list-group-flush">
+                <ul class="list-group">
                     <li class="list-group-item list-group-item-dark">
                         <span class="mr-3">Text HTML</span>
-                        <a href="hw2/text.html" class="btn btn-primary">text.html</a>
+                        <a href="hw2/text.html" class="btn btn-success">text.html</a>
                     </li>
                 </ul>
             </div>
@@ -90,42 +106,53 @@
             </div>
         </div>
         
-        <div class="card text-white bg-dark mb-3">
+        <div class="card text-white bg-dark mb-3" id="sem2">
             <div class="card-header">
-                <h4>Семинар 4. CSS Box Model</h4>
+                <h4>Семинар 2. Основы HTML</h4>
             </div>
             <div class="card-body">
                 <h5 class="card-title">
-                    Цель работы: научиться задавать размеры HTML-элементов при помощи CSS.
+                    Цель работы: изучить основы языка HTML.
                 </h5>
-                <ul class="list-group list-group-flush">
+                <ul class="list-group">
                     <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">Задание 1</span>
-                        <a href="hw3/e1.html" class="btn btn-primary">e1.html</a>
+                        <span class="mr-3">Hello World!</span>
+                        <a href="./hw1/hello.html" class="btn btn-success">hello.html</a>
                     </li>
                     <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">Задание 2</span>
-                        <a href="hw3/e2.html" class="btn btn-primary">e2.html</a>
+                        <span class="mr-3">Text HTML</span>
+                        <a href="./hw1/text.html" class="btn btn-success">text.html</a>
                     </li>
                     <li class="list-group-item list-group-item-dark">
-                        <span class="mr-3">Задание 3</span>
-                        <a href="hw3/e3.html" class="btn btn-primary">e3.html</a>
+                        <span class="mr-3">List HTML</span>
+                        <a href="./hw1/list.html" class="btn btn-success">list.html</a>
+                    </li>
+                    <li class="list-group-item list-group-item-dark">
+                        <span class="mr-3">table HTML</span>
+                        <a href="./hw1/table.html" class="btn btn-success">table.html</a>
+                    </li>
+                    <li class="list-group-item list-group-item-dark">
+                        <span class="mr-3">menu HTML</span>
+                        <a href="./hw1/menu.html" class="btn btn-success">menu.html</a>
                     </li>
                 </ul>
             </div>
             <div class="card-footer">
                 <h6>Ответы на вопросы:</h6>
                 <ol>
-                    <li>CSS - Cascading Style Sheets — каскадные таблицы стилей</li>
-                    <li>Отдельным файлом, в тэге style в head, атрибутом элемента</li>
-                    <li>Общий шаблон стиля, применимый к нескольким элементом сразу</li>
-                    <li>Уникальный шаблон стиля, применимый к одному уникальному элементу</li>
-                    <li>Написание каскадных таблиц стилей</li>
-                    <li>Файл, style-head, inline-атрибут</li>
+                    <li>Язык гипертекстовой разметки. "Каркас" веб-страницы. HyperText Markup Language</li>
+                    <li>Элемент HTML. Открытые и закрытые</li>
+                    <li>Свойства тега</li>
+                    <li>Кликабельный элемент HTML, перенаправляющий на другую страницу или к блоку по id</li>
+                    <li>Текст, сформированный с помощью языка разметки (HTML)</li>
                 </ol>
             </div>
         </div>
+
         
+
+        
+
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

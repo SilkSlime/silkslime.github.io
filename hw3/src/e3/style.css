@@ -6,40 +6,45 @@ html, body {
 
 #logo {
     background-color: red;
-    width: 1720px;
-    height: 200px;
+    width: 80%;
+    height: 15vh;
     margin: auto;
 }
 #mc {
     display: block;
     margin: auto;
     padding: 0;
-    width: 1720px;
-    height: 780px;
 }
 #menu {
     display: inline-block;
     background-color: aquamarine;
-    width: 500px;
-    height: 780px;
+    width: 20%;
+    height: 80vh;
     margin: 0;
     padding: 0;
     
 }
-
 #content {
     display: inline-block;
     background-color: bisque;
-    width: 1220px;
-    height: 780px;
+    width: 40%;
+    height: 80vh;
+    margin: 0;
+    padding: 0;
+}
+#ad {
+    display: inline-block;
+    background-color: yellow;
+    width: 20%;
+    height: 80vh;
     margin: 0;
     padding: 0;
 }
 
 #footer {
     background-color: palegreen;
-    width: 1720px;
-    height: 100px;
+    width: 80%;
+    height: 5vh;
     margin: auto;
 }
 
