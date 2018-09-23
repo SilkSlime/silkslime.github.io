@@ -26,7 +26,6 @@ html, body {
     padding: 0;
     
 }
-
 #content {
     display: inline-block;
     background-color: bisque;
@@ -35,14 +34,12 @@ html, body {
     margin: 0;
     padding: 0;
 }
-
 #footer {
     background-color: palegreen;
     width: 1720px;
     height: 100px;
     margin: auto;
 }
-
 #logo, #mc, #footer {
     text-align: center;
 }

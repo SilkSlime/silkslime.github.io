@@ -3,7 +3,6 @@ html, body {
     margin: 0;
     background-color: azure;
 }
-
 #logo {
     background-color: red;
     width: 80%;
@@ -22,7 +21,6 @@ html, body {
     height: 80vh;
     margin: 0;
     padding: 0;
-    
 }
 #content {
     display: inline-block;
@@ -40,14 +38,12 @@ html, body {
     margin: 0;
     padding: 0;
 }
-
 #footer {
     background-color: palegreen;
     width: 80%;
     height: 5vh;
     margin: auto;
 }
-
 #logo, #mc, #footer {
     text-align: center;
 }
