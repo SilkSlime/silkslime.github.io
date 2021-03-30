@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Живой canvas</title>
+	<link rel="stylesheet" href="css/uikit.min.css">
+</head>
+
+<body>
+	<div class="uk-section uk-section-secondary uk-section-xsmall">
+		<div class="uk-container">
+			<div uk-grid class="uk-child-width-1-3@m">
+				<div><input id="img" class="uk-input" type="text" placeholder="ImageURL" name="img"></div>
+				<div><input id="uname" class="uk-input" type="text" placeholder="Username" name="username"></div>
+				<div><button id="savebtn" class="uk-input">Save</button></div>
+			</div>
+		</div>
+	</div>
+	<div class="uk-section uk-section-primary uk-section-xsmall" >
+		<div class="uk-container">
+			<div class="uk-card uk-card-body uk-card-default" >
+				<div id="container" class="uk-panel uk-panel-scrollable" uk-height-viewport="expand: true" style="resize: none;">
+					<div><i class="uk-text-small">23:30</i> <b><img style="height: 40px; width: 40px;" src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt=""> Artem</b>: laalalalla</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="uk-section uk-section-secondary uk-section-xsmall">
+		<div class="uk-container">
+			<div uk-grid>
+				<div class="uk-width-5-6"><textarea id="message" class="uk-textarea" rows="3" style="resize: none;"></textarea></div>
+				<div class="uk-width-1-6"><button id="sendbtn" class="uk-input">Send</button></div>
+			</div>
+		</div>
+	</div>
+	<script src="js/uikit.min.js"></script>
+	<script src="js/uikit-icons.min.js"></script>
+	<script>
+		let eUsername = document.querySelector("#uname");
+		let eImgurl = document.querySelector("#img");
+		let eSaveBtn = document.querySelector("#savebtn");
+		let eContainer = document.querySelector("#container");
+		let eMessage = document.querySelector("#message");
+		let eSendBtn = document.querySelector("#sendbtn");
+
+		let username = "Anon";
+		let imgurl = "";
+		let message = "";
+		updateInfo();
+		function updateInfo() {
+			if (localStorage.username != undefined) username = localStorage.username;
+			if (localStorage.imgurl != undefined) imgurl = localStorage.imgurl;
+			eUsername.value = username;
+			eImgurl.value = imgurl;
+		}
+
+		function saveInfo() {
+			if (eUsername.value.trim() != "") localStorage.username = eUsername.value.trim();
+			localStorage.imgurl = eImgurl.value;
+			updateInfo();
+		}
+
+		eSaveBtn.addEventListener("click", saveInfo);
+
+		function getAuthor() {
+			return `<img style="height: 40px; width: 40px;" src=${imgurl}> ${username}`;
+		}
+
+		setInterval(updateMessages, 800);
+
+		function updateMessages() {
+			let xhr = new XMLHttpRequest();
+			xhr.open("get", "http://37.77.104.246/api/chat/getmessages.php", true);
+			xhr.onload = () => {
+				if (xhr.readyState = 4 && xhr.status == 200) {
+					let messages = JSON.parse(xhr.responseText);
+					clearMessages();
+					for (let message of messages) {
+						let msg = document.createElement("div");
+						msg.innerHTML = `<i class="uk-text-small">${message.datetime.substr(11,5)}</i> <b>${message.author}</b>: ${message.text}`;
+						eContainer.appendChild(msg);
+					}
+				}
+			}
+			xhr.send();
+		}
+
+		function clearMessages() {
+			eContainer.innerHTML = "";
+		}
+
+		function sendMessage() {
+			let fd = new FormData();
+			fd.append("author", getAuthor());
+			fd.append("text", eMessage.value);
+			let xhr = new XMLHttpRequest();
+			xhr.open("get", `http://37.77.104.246/api/chat/sendmessage.php?author=${encodeURIComponent(getAuthor())}&text=${encodeURIComponent(eMessage.value)}`, true);
+			xhr.send();
+			eMessage.value = "";
+		}
+
+		eSendBtn.addEventListener("click", sendMessage);
+	</script>
+</body>
+
+</html>
