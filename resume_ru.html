@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Интерактивное резюме</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/uikit.min.css" />
+        <script src="js/uikit.min.js"></script>
+        <script src="js/uikit-icons.min.js"></script>
+        <script src="js/uikit-icons.min.js"></script>
+    </head>
+    <body>
+        <div class="uk-section uk-section-secondary uk-preserve-color">
+            <div class="uk-container uk-container-large">
+                <div class="uk-section uk-section-default">
+                    <div class="uk-container" style="padding: 0 20px;">
+                        <hr class="uk-divider-icon">
+                        <!--  -->
+                        <div uk-grid>
+                            <div class="uk-width-3-4">
+                                <h1>Панфилкин Артём Михайлович</h1>
+                                <div><h2 class="uk-text-primary">Младший разработчик</h2></div>
+                                <div>
+                                    <div>
+                                        <a class="uk-link-text" uk-tooltip="title: ~20 лет; pos: right">
+                                            <span uk-icon="calendar"></span>
+                                            22.12.2000
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="uk-link-text" href="https://www.google.ru/maps/place/55.61223705401069,%2037.6034895372812">
+                                            <span uk-icon="location"></span>
+                                            Россия, Москва, метро Пражская
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="uk-link-text" href="tel:+79266203962" uk-tooltip="title: Лучше в телеграм!; pos: right">
+                                            <span uk-icon="receiver"></span>
+                                            +7(926)620-39-62
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="uk-link-text" href="mailto:silkslime@yandex.ru">
+                                            <span uk-icon="mail"></span>
+                                            silkslime@yandex.ru
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="uk-link-text" href="https://github.com/silkslime">
+                                            <span uk-icon="github"></span>
+                                            https://github.com/silkslime
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="uk-link-text" href="https://t.me/SilkSlime">
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
+                                                </svg>
+                                            </span>
+                                            @SilkSlime
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4">
+                                <img src="./src/img/me_resume.png" alt="" srcset="">
+                            </div>
+                        </div>
+                        <!--  -->
+                        <hr>
+                        <!--  -->
+                        <div>
+                            <h2 class="uk-text-primary">
+                                <span uk-icon="icon: list; ratio: 1.2"></span>
+                                Навыки
+                            </h2>
+                            <div>
+                                <div uk-grid>
+                                    <div class="uk-width-3-5">
+                                        <h3>Технические навыки</h3>
+                                        <ul class="uk-list uk-list-hyphen">
+                                            <li>Языки программирования + основные паттерны проектирования и принципы программирования
+                                                <ul class="uk-list uk-list-square">
+                                                    <li uk-tooltip="title: Прошел 'школу разработчиков' от Mindbox и стажировался там; pos: top; offset: -5">
+                                                        C#, dotNET, ASP NET (опыт разработки бизнес-приложений - backend)
+                                                    </li>
+                                                    <li uk-tooltip="title: Прошел 'школу разработчиков' от Mindbox и стажировался там. Преподаю основы JS; pos: top; offset: -5">
+                                                        JavaScript/TypeScript (опыт разработки бизнес-приложений - frontend)
+                                                    </li>
+                                                    <li uk-tooltip="title: Написание интерфейса к базе данных для проекта машинного обучения. Также пройдены курсы от Школы Программистов; pos: top; offset: -5">
+                                                        С++ (участие в проектной деятельности университета / проектная работа)
+                                                    </li>
+                                                    <li uk-tooltip="title: Некоторые из проектов можно найти на github. Пройдены курсы от Школы Программистов; pos: top; offset: -5">
+                                                        Python (базовые навыки владения, а также опыт разработки на фреймворке Django)
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Работа с базами данных
+                                                <ul class="uk-list uk-list-square">
+                                                    <li uk-tooltip="title: 40+ решенных задач на sql-ex.ru; pos: top; offset: -5">
+                                                        Уверенное знание синтаксиса SQL
+                                                    </li>
+                                                    <li uk-tooltip="title: Через PHP, C#, Python; pos: top; offset: -5">
+                                                        Опыт работы с базами данных как напрямую, так и через языки программирования
+                                                    </li>
+                                                    <li uk-tooltip="title: Некоторые из проектов можно найти на github; pos: top; offset: -5">
+                                                        Любительское проектирование схем баз данных
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li uk-tooltip="title: См. github; pos: top; offset: -5">
+                                                Опыт работы с системой контроля версий Git: использование как для личных целей, так и для работы
+                                            </li>
+                                            <li uk-tooltip="title: Работа и домашнее использование в течении нескольких лет; pos: top; offset: -5">
+                                                Уверенная работа с ОС Linux (знание базовых команд и системы, настройка)
+                                            </li>
+                                            <li uk-tooltip="title: Работа и преподавание; pos: top; offset: -5">
+                                                Хорошее знание WEB-технологий: HTML5, CSS3, JS (фреймворки React, Node.js, Vue, AJAX и Websockets), PHP
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="uk-width-2-5">
+                                        <h3>Универсальные навыки</h3>
+                                        <ul class="uk-list uk-list-hyphen">
+                                            <li>
+                                                Знание иностранных языков
+                                                <ul class="uk-list uk-list-square">
+                                                    <li uk-tooltip="title: ; pos: top; offset: -5">
+                                                        Русский: родной
+                                                    </li>
+                                                    <li uk-tooltip="title: ; pos: top; offset: -5">
+                                                        Английский: B1 - Intermediate (без сертификатов)
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li uk-tooltip="title: ; pos: top; offset: -5">
+                                                Креативность
+                                            </li>
+                                            <li uk-tooltip="title: ; pos: top; offset: -5">
+                                                Умение работать в команде
+                                            </li>
+                                            <li uk-tooltip="title: ; pos: top; offset: -5">
+                                                Быстрая обучаемость и умение искать информацию
+                                            </li>
+                                            <li uk-tooltip="title: ; pos: top; offset: -5">
+                                                Умение адаптироваться
+                                            </li>
+                                            <li uk-tooltip="title: ; pos: top; offset: -5">
+                                                Высокий уровень тайм менеджмента
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <hr>
+                        <!--  -->
+                        <div>
+                            <h2 class="uk-text-primary">
+                                <span uk-icon="icon: history; ratio: 1.2"></span>
+                                Опыт работы
+                            </h2>
+                            <div>
+                                <div class="uk-text-large">
+                                    <span class="uk-text-emphasis">
+                                        <a class="uk-link-text" href="https://informatics.ru/">
+                                            ЧУ ДО "ШКОЛА ПРОГРАММИСТОВ", Москва
+                                        </a>
+                                    </span>
+                                    -
+                                    <span class="uk-text-italic uk-text-muted">
+                                        преподаватель
+                                    </span>
+                                </div>
+                                <div class="uk-text-italic uk-text-muted">
+                                    ОКТЯБРЬ 2018 – НАСТОЯЩЕЕ ВРЕМЯ
+                                </div>
+                                <div>
+                                    <ul class="uk-list uk-list-hyphen uk-text-emphasis">
+                                        <li>
+                                            Преподавание IT-дисциплин и курирование в учебных группах школьников на условиях частичной занятости.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="uk-text-large">
+                                    <span class="uk-text-emphasis">
+                                        <a class="uk-link-text" href="https://mindbox.ru/">
+                                            ООО "МАЙНДБОКС", Москва
+                                        </a>
+                                    </span>
+                                    -
+                                    <span class="uk-text-italic uk-text-muted">
+                                        стажер-разработчик
+                                    </span>
+                                </div>
+                                <div class="uk-text-italic uk-text-muted">
+                                    НОЯБРЬ 2020 – ЯНВАРЬ 2021
+                                </div>
+                                <div>
+                                    <ul class="uk-list uk-list-hyphen uk-text-emphasis">
+                                        <li>
+                                            Разработка и поддержка внутреннего бизнес-продукта для учета продуктивности сотрудников.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <hr>
+                        <!--  -->
+                        <div>
+                            <h2 class="uk-text-primary">
+                                <span uk-icon="icon: world; ratio: 1.2"></span>
+                                Образование
+                            </h2>
+                            <div>
+                                <div class="uk-text-large">
+                                    <span class="uk-text-emphasis">
+                                        <a class="uk-link-text" href="https://bmstu.ru/">
+                                            МГТУ им. Н.Э.Баумана, Москва
+                                        </a>
+                                    </span>
+                                    -
+                                    <span class="uk-text-italic uk-text-muted">
+                                        бакалавр
+                                    </span>
+                                </div>
+                                <div class="uk-text-italic uk-text-muted">
+                                    СЕНТЯБРЬ 2018 - АВГУСТ 2022
+                                </div>
+                                <div class="uk-text-emphasis">
+                                    В данный момент заканчиваю третий курс.
+                                </div>
+                                <div>
+                                    <ul class="uk-list uk-list-hyphen uk-text-emphasis">
+                                        <li>
+                                            Факультет: "Информатика и системы управления" (ИУ).
+                                        </li>
+                                        <li>
+                                            Специальность: 11.03.03 "Конструирование и технология электронных средств" (ИУ4).
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="uk-divider-icon">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
