@@ -1,20 +1,185 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Title</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/uikit.min.css" />
-        <script src="js/uikit.min.js"></script>
-        <script src="js/uikit-icons.min.js"></script>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <div class="uk-section">
-            <div class="uk-container">
-                <h1>Привет, <span class="corrupted">123</span>! Кажется ты единственный, кто вызвался найти украденное <span class="corrupted">123456</span> поздравление!</h1>
-            </div>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="uk-section">
+        <div class="uk-container uk-container-xlarge" id="terminal">
         </div>
+    </div>
     <script src="js/corrupt.js"></script>
-    </body>
+    <script src="js/script.js"></script>
+    <script>
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        let user = params.nme ? params.nme : `<span class="corrupted">undefined</span>`;
+        let stage = 0;
+        let secret = "fsudhfisdhfisdhfsdf";
+        let answer = "fsudhfisdhfisdhfsdf";
+
+        document.addEventListener('keydown', function(e){
+            if (e.key=="Enter" && stage == 6) {
+                lastchance_ai_exec3();                
+            }
+        });
+
+        //////////////////////////////////////////////////////
+        function lastchance_ai_exec3() {
+            stage = 7;
+            let time = 0;
+            let txt = inp.value;
+            inp.remove();
+
+            log(txt, "yellow", time); time+=1000;
+            log(`[AI] Давно не виделись, ${user}, хах! `, "lightblue", time); time+=1000;
+            log(`[AI] Так, что тут у нас! ${txt}? Интересно... Пару секунд, попробую расшифровать... `, "lightblue", time); time+=2500;
+            if (txt == answer) {
+                log(`[AI] ДА!!! Проверил по хэшу, кажется верный ключ!`, "lightblue", time); time+=1000;
+                log(`[AI] Запускаю процесс полной дешифровки...`, "lightblue", time); time+=1000;
+                log(`Decryption started...`, 0, time); time+=1000;
+                for (let i = 0; i <= 100; i+=10) {
+                    log(`[${i}/100] Decrypting...`, 0, time); time+=Math.floor(Math.random() * 5000);
+                }
+                log(`Decryption completed!`, 0, time); time+=1000;
+            } else {
+                stage = 6;
+                log(`[AI] Облом! Ключ не подошел, попробуй еще подумать.`, "lightblue", time); time+=1000;
+                log(`Standby mode activated`, 0, time); time+=1000;
+                let newcmd = log("", 0, time); time+=1000;
+                let inp = document.createElement('input');
+                inp.id = "inp";
+                inp.style.width="";
+                setTimeout(function () { newcmd.appendChild(inp); }, time);
+            }
+
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function lastchance_ai_exec2(e) {
+            stage = 6;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log(`Connecting... `, 0, time); time+=1000;
+            log(`Done!`, 0, time); time+=1000;
+            log(`[AI] Привет, ${user}! `, "lightblue", time); time+=1000;
+            log(`[AI] Посмотрел тот файл? Я думаю в нем скрыта разгадка, но наверняка только ЧЕЛОВЕК сможет понять в чем суть...`, "lightblue", time); time+=1000;
+            log(`[AI] ${secret}...`, "lightblue", time); time+=1000;
+            log(`[AI] ...`, "lightblue", time); time+=1000;
+            log(`[AI] . . .`, "lightblue", time); time+=1000;
+            log(`[AI] . . . . .`, "lightblue", time); time+=1000;
+            log(`[AI] Нет, я совсем не могу ничего сделать.`, "lightblue", time); time+=1000;
+            log(`[AI] ${user}, ты должен спасти праздник!`, "lightblue", time); time+=1000;
+            log(`[AI] И Н А Ч Е. Н И К Т О. Э Т О. Н Е. С Д Е Л А Е Т.`, "lightblue", time); time+=1000;
+            log(`[AI] Так что... Я пока тут посижу, подожду... Напиши мне ключ расшифровки, как разберешься!`, "lightblue", time); time+=1000;
+            log(`[AI] Я верю в тебя! Удачи!`, "lightblue", time); time+=1000;
+            log(`Standby mode activated`, 0, time); time+=1000;
+
+            let newcmd = log("", 0, time); time+=1000;
+            let inp = document.createElement('input');
+            inp.id = "inp";
+            inp.style.width="";
+            setTimeout(function () { newcmd.appendChild(inp); }, time);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function c0mpl1m3nts_exec(e) {
+            stage = 5;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log(secret, 0, time); time+=1;
+
+            cmd("admin@newyear:~$ ", "cat c0mpl1m3nts.txt", lastchance_ai_exec2, time)
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function lastchance_ai_exec(e) {
+            stage = 4;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log(`Starting AI Core... `, 0, time); time+=3000;
+            log(`Done!`, 0, time); time+=1;
+            log(`Setting the weights of the neural network...`, 0, time); time+=2000;
+            log(`Done!`, 0, time); time+=1;
+            log(`Assessing the problem...`, 0, time); time+=4000;
+            log(`Done!`, 0, time); time+=1000;
+            log(`[AI] Привет, ${user}! `, "lightblue", time); time+=2000;
+            log(`[AI] Кажется ты единственный, кто вызвался найти украденное <span
+                class="corrupted">123456</span> поздравление и вернуть праздничное настроение!`, "lightblue", time); time+=2000;
+            log(`[AI] <span class="corrupted">123456</span>, который украл поздравление, тот еще нарцисс! Он зашифровал его и удалил наши исходники...`, "lightblue", time); time+=2000;
+            log(`[AI] Видишь? Файлик compliments.crypted зашифрован! Я ничего не могу сделать, моих мощностей не хватит на перебор вариантов.`, "lightblue", time); time+=2000;
+            log(`[AI] Тут единственный вариант - найти ключ для дешифровки, а дальше я уж как нибудь сам!`, "lightblue", time); time+=2000;
+            log(`[AI] Помоги вернуть поздравление! Найди ключ дешифровки!`, "lightblue", time); time+=2000;
+            log(`[AI] Все, что я могу тебе сказать - <span class="corrupted">123456</span> оставил какойто текстовый файл, посмотри его. Я буду ждать...`, "lightblue", time); time+=1;
+            log(`Disconnected`, 0, time); time+=1;
+
+            cmd("admin@newyear:~$ ", "cat c0mpl1m3nts.txt", c0mpl1m3nts_exec, time)
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function lsla_exec(e) {
+            stage = 3;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log("drwxrwxrwx 1 root root 4096 Nov 21 01:12 .", 0, time); time += 10;
+            log("drwxr-xr-x 1 root root 4096 Nov 24 22:01 ..", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 9590 Nov 21 01:12 ai_core.hex", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 9840 Jan 01 00:01 compliments.crypted", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 9840 Jan 01 00:01 c0mpl1m3nts.txt", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 1430 Dec 16 00:49 credits.txt", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 2153 Nov 19 18:06 lastchance_ai.sh", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 5540 Nov 24 00:17 newyear.sh", 0, time); time += 10;
+
+            cmd("admin@newyear:~$ ", "lastchance_ai.sh", lastchance_ai_exec, time)
+        }
+        ////////////////////////////////////////////////////////////////////////////////////
+        function newyear_exec(e) {
+            stage = 2;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log("Analysis of New Year mood...", 0, time); time += 2000;
+            log("[ERROR] New Year mood not found!", "red", time); time += 1;
+            log("Evaluation of the festive atmosphere...", 0, time); time += 2000;
+            log("[FATAL] Condition: terrible!", "red", time); time += 1;
+
+            cmd("admin@newyear:~$ ", "ls -la", lsla_exec, time)
+        }
+        /////////////////////////
+        function newyear_start(e) {
+            stage = 1;
+            cmd("admin@newyear:~$ ", "newyear.sh", newyear_exec, 0)
+        }
+
+        lastchance_ai_exec2(null);
+    </script>
+</body>
+
 </html>

@@ -12,12 +12,16 @@ function random_str(alphabet, length) {
 
 function corrupt() {
     for (let cor of corrupted) {
-        console.log(cor.innerHTML.length)
         let str = random_str(gliphs, cor.innerHTML.length);
         cor.innerHTML = str;
     }
 }
 
-setInterval(corrupt, 40)
+function update_corrupted(){
+    corrupted = document.querySelectorAll(".corrupted")
+}
+
+setInterval(corrupt, 40);
+setInterval(update_corrupted, 100);
 
 
