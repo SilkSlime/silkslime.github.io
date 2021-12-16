@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/uikit.min.css" />
+    <script src="../js/uikit.min.js"></script>
+    <script src="../js/uikit-icons.min.js"></script>
+    <style>
+        .corrupted {
+            font-family: 'Courier New', monospace !important;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="uk-section">
+        <div class="uk-container uk-container-xsmall" id="terminal">
+            <h1>Добро пожаловать на наш файлообменник!</h1>
+            <h2>Чтобы скачать выбранный файл <span class="corrupted">dsdfhiuagsd</span>.i4got докажите что вы не робот!</h2>
+            <div style="background-color: wheat; padding: 2px 10px;">
+                <h3>Минутка рекламной кулинарии!</h3>
+                <p>
+                    Сегодня, ипользуя <b>сахар</b>, наш, переварачивающий кулинарию, повар <b>Ренжив</b>, приготовит десерт!
+                </p>
+                <p>
+                    Собственно на десерт припасен... <b>ПУДИНГ</b> !!!
+                </p>
+                <p>
+                   А сможешь ли ты понять, какой секретный основной компонент из России этого знаменитого пудинга?
+                </p>
+            </div>
+            <p>
+                <h2>Введите пароль, доказывающий, что вы человек:</h3>
+                <div>
+                    <input id="key">
+                    <button id="sub">Скачать файл!</button>
+                    <div style="color: red;" id="error"></div>
+                    <div id="good">
+                        
+                    </div>
+                </div>
+            </p>
+        </div>
+    </div>
+
+    <script src="../js/corrupt.js"></script>
+    <script>
+        let answer = "юуоиэс";
+        let k = document.querySelector("#key");
+        let s = document.querySelector("#sub");
+        let er = document.querySelector("#error");
+        let g = document.querySelector("#good");
+
+        s.addEventListener("click", function(){
+            let uin = k.value;
+            if (uin.toLowerCase() == answer) {
+                er.innerHTML = "";
+                g.innerHTML =  `<a  style="color: green;" href="ghbdtn! gfhjkm - ишпырдуззфщдшмшу.i4got">Ссылка на скачивание будет доступна <span class="corrupted">93</span> секунд...</a>`;
+            } else {
+                er.innerHTML = "Неверный код доступа!!!";
+                setTimeout(function() {er.innerHTML=""}, 1500)
+            }
+        });
+    </script>
+</body>
+
+</html>

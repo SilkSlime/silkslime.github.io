@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="uk-section">
+        <div class="uk-container uk-container-xlarge" id="terminal">
+        </div>
+
+    </div>
+    <div id="snow" class="snowflakes" aria-hidden="true">
+
+    </div>
+
+    <script src="js/corrupt.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        var final = new Audio('assets/final_music.mp3');
+        final.volume = 0.1;
+
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        let user = params.nme ? params.nme : `дружище`;
+        let stage = localStorage.getItem("stage") ? parseInt(localStorage.getItem("stage")) : 0;
+        let secret = "68 74 74 70 73 3a 2f 2f 73 69 6c 6b 73 6c 69 6d 65 2e 67 69 74 68 75 62 2e 69 6f 2f 6f 74 68 65 72 2f 71 75 65 73 74 2f 71 75 65 73 74 2f 6f 6c 64 5f 72 65 63 69 65 70 74 2e 74 78 74";
+        let answer = "Light up your New Year fire to the fullest!";
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key == "Enter" && stage == 6) {
+                lastchance_ai_exec3();
+            }
+        });
+
+        function restart() {
+            terminal.innerHTML = '';
+            snow.innerHTML = '';
+
+            newyear_start(null);
+        }
+        //////////////////////////////////////////////////////
+        function credits(e) {
+            let time = 0;
+            log("Спасибо что играл в историю, ты - лучший!", "white", time); time += 1000;
+            log("С уважением, твой Санта, Тёма Панфилкин.", "white", time); time += 1000;
+            log("Telegram: <a href='https://t.me/SilkSlime'>@silkslime</a>", "white", time); time += 1000;
+            log("vk: <a href='https://vk.com/silkslime'>vk.com/silkslime</a>", "white", time); time += 1000;
+            log("email: <a href='mailto:silkslime@yandex.ru'>silkslime@yandex.ru</a>", "white", time); time += 1000;
+            log("Лицензия: свободная, можно использовать и переиспользовать с одним условием - чтобы это было в хороших целях и дарило хорошее настроение! Для этого можно в GET запросе указать любое имя или вообще не указывать!", "white", time); time += 1000;
+            log("Скоро можно будет перезапустить историю...", "white", time); time += 1000;
+            log("Пора прощаться... Буду бесконечно рад фидбеку!", "white", time); time += 1000;
+            log("Пока пока!", "white", time, true); time += 4000;
+
+            cmd("admin@newyear:~$ ", "/root/restart.sh", restart, time);
+
+        }
+        //////////////////////////////////////////////////////
+        function compliments(e) {
+            final.play();
+            let time = 0;
+
+            snow.innerHTML = `<div class="snowflake">❅</div><div class="snowflake">❅</div>
+                <div class="snowflake">❆</div><div class="snowflake">❄</div>
+                <div class="snowflake">❅</div><div class="snowflake">❆</div>
+                <div class="snowflake">❄</div><div class="snowflake">❅</div>
+                <div class="snowflake">❆</div><div class="snowflake">❄</div>
+            `;
+
+            
+            log(`Привет, ${user}!`, "white", time, 1); time += 5000;
+            log(`Поздравляю тебя с Новым Годом! `, "white", time); time += 3000;
+            log(`Хочу пожелать тебе оставаться таким же светлым человеком, какой ты сейчас, а я уверен - это так!`, "white", time); time += 4000;
+            log(`Делись своим внутренним огоньком с другими и гори ярко, занимаясь любимым делом!`, "white", time); time += 4000;
+            log(`Естественно еще хочу пожелать тебе щщасться-здоровья, сейчас без этого вообще никуда, хаха!`, "white", time); time += 4000;
+            log(`Удачи и успехов тебе во всех начинаниях, продолжаниях и развитии! У тебя точно все получится - даже не сомневаюсь!`, "white", time); time += 5000;
+            log(`Спасибо что прошел мою новогоднюю сказку до конца! Если что - можно было читерить, но я не думаю, что так было бы интереснее!`, "white", time); time += 5000;
+            log(`А пока, вот и подошла к самому концу история... `, "white", time); time += 4000;
+            log(`Сейчас ночь 16го декабря, а я сижу пишу последние слова! Во дела...`, "white", time); time += 4000;
+            log(`Надеюсь что праздничное настроение тебе вернуть на самом деле удалось, а еще лучше, если оно никуда и не терялось!`, "white", time); time += 5000;
+            log(`XOXO,`, "white", time, true); time += 3000;
+            log(`Твой Санта`, "white", time, true); time += 7000;
+
+            cmd("admin@newyear:~$ ", "cat credits.txt", credits, time);
+        }
+        //////////////////////////////////////////////////////
+        function clear_exec(e) {
+            localStorage.setItem("stage", 9);
+            stage = 9;
+            terminal.innerHTML = '';
+            cmd("admin@newyear:~$ ", "cat compliments.txt", compliments, 0)
+        }
+        //////////////////////////////////////////////////////
+        function lsla_exec2(e) {
+            localStorage.setItem("stage", 8);
+            stage = 8;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log("drwxrwxrwx 1 root root 4096 Nov 21 01:12 .", 0, time); time += 10;
+            log("drwxr-xr-x 1 root root 4096 Nov 24 22:01 ..", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 9590 Nov 21 01:12 ai_core.hex", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 9840 Dec 31 23:30 compliments.txt", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 1520 Nov 21 04:24 c0mpl1m3nts.txt", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 1430 Dec 16 00:49 credits.txt", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 2153 Nov 19 18:06 lastchance_ai.sh", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 5540 Nov 24 00:17 newyear.sh", 0, time); time += 10;
+
+            cmd("admin@newyear:~$ ", "clear", clear_exec, time)
+        }
+        //////////////////////////////////////////////////////
+        function lastchance_ai_exec3() {
+            let time = 0;
+            let txt = inp.value;
+            inp.remove();
+
+            log(txt, "yellow", time); time += 1000;
+            log(`[AI] Давно не виделись, ${user}, хах! `, "lightblue", time); time += 1000;
+            log(`[AI] Так, что тут у нас! ${txt}? Интересно... Пару секунд, попробую расшифровать... `, "lightblue", time); time += 2500;
+            if (txt == answer) {
+                log(`[AI] ДА!!! Проверил по хэшу, кажется верный ключ!`, "lightblue", time); time += 1000;
+                log(`[AI] Запускаю процесс полной дешифровки...`, "lightblue", time); time += 1000;
+                log(`Decryption started...`, 0, time); time += 1000;
+                for (let i = 0; i <= 100; i += 10) {
+                    log(`[${i}/100] Decrypting...`, 0, time); time += Math.floor(Math.random() * 5000);
+                }
+                log(`Decryption completed!`, 0, time); time += 1000;
+                log(`[AI] Что сказать, все получилось! Я же говорил что верю в тебя :)`, "lightblue", time); time += 1000;
+                log(`[AI] Теперь праздник спасен и все благодаря тебе! Ты заслужил поздравление!!`, "lightblue", time); time += 1000;
+                log(`[AI] Я пожалуй пойду, дальше ты справишься сам, а мне столько всего успеть нужно, ужас!`, "lightblue", time); time += 1000;
+                log(`[AI] Удачи и... спасибо!`, "lightblue", time); time += 1000;
+                log(`Disconnected`, 0, time); time += 1000;
+
+                cmd("admin@newyear:~$ ", "ls -la", lsla_exec2, time);
+
+            } else {
+                stage = 6;
+                log(`[AI] Облом! Ключ не подошел, попробуй еще подумать.`, "lightblue", time); time += 1000;
+                log(`Standby mode activated`, 0, time); time += 1000;
+                let newcmd = log("", 0, time); time += 1000;
+                let inp = document.createElement('input');
+                inp.id = "inp";
+                inp.style.width = "";
+                setTimeout(function () { newcmd.appendChild(inp); }, time);
+            }
+
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function lastchance_ai_exec2(e) {
+            stage = 6;
+            localStorage.setItem("stage", 6);
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log(`Connecting... `, 0, time); time += 1000;
+            log(`Done!`, 0, time); time += 1000;
+            log(`[AI] Привет, ${user}! `, "lightblue", time); time += 1000;
+            log(`[AI] Посмотрел тот файл? Я думаю в нем скрыта разгадка, но наверняка только ЧЕЛОВЕК сможет понять в чем суть...`, "lightblue", time); time += 1000;
+            log(`[AI] ${secret}...`, "lightblue", time); time += 1000;
+            log(`[AI] ...`, "lightblue", time); time += 1000;
+            log(`[AI] . . .`, "lightblue", time); time += 1000;
+            log(`[AI] . . . . .`, "lightblue", time); time += 1000;
+            log(`[AI] Нет, я совсем не могу ничего сделать.`, "lightblue", time); time += 1000;
+            log(`[AI] ${user}, ты должен спасти праздник!`, "lightblue", time); time += 1000;
+            log(`[AI] И Н А Ч Е. Н И К Т О. Э Т О. Н Е. С Д Е Л А Е Т.`, "lightblue", time); time += 1000;
+            log(`[AI] Так что... Я пока тут посижу, подожду... Напиши мне ключ расшифровки, как разберешься!`, "lightblue", time); time += 1000;
+            log(`[AI] Я верю в тебя! Удачи!`, "lightblue", time); time += 1000;
+            log(`Standby mode activated`, 0, time); time += 1000;
+
+            if (debug) time = 0;
+            let newcmd = log("", 0, time); time += 1000;
+            let inp = document.createElement('input');
+            inp.id = "inp";
+            inp.style.width = "";
+            setTimeout(function () { newcmd.appendChild(inp); }, time);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function c0mpl1m3nts_exec(e) {
+            localStorage.setItem("stage", 5);
+            stage = 5;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log(secret, 0, time); time += 1;
+
+            cmd("admin@newyear:~$ ", "lastchance_ai.sh", lastchance_ai_exec2, time)
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function lastchance_ai_exec(e) {
+            localStorage.setItem("stage", 4);
+            stage = 4;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log(`Starting AI Core... `, 0, time); time += 3000;
+            log(`Done!`, 0, time); time += 1;
+            log(`Setting the weights of the neural network...`, 0, time); time += 2000;
+            log(`Done!`, 0, time); time += 1;
+            log(`Assessing the problem...`, 0, time); time += 4000;
+            log(`Done!`, 0, time); time += 1000;
+            log(`[AI] Привет, ${user}! `, "lightblue", time); time += 2000;
+            log(`[AI] Кажется ты единственный, кто вызвался найти украденное <span
+                class="corrupted">123456</span> поздравление и вернуть праздничное настроение!`, "lightblue", time); time += 2000;
+            log(`[AI] <span class="corrupted">123456</span>, который украл поздравление, тот еще нарцисс! Он зашифровал его и удалил наши исходники...`, "lightblue", time); time += 2000;
+            log(`[AI] Видишь? Файлик compliments.crypted зашифрован! Я ничего не могу сделать, моих мощностей не хватит на перебор вариантов.`, "lightblue", time); time += 2000;
+            log(`[AI] Тут единственный вариант - найти ключ для дешифровки, а дальше я уж как нибудь сам!`, "lightblue", time); time += 2000;
+            log(`[AI] Помоги вернуть поздравление! Найди ключ дешифровки!`, "lightblue", time); time += 2000;
+            log(`[AI] Все, что я могу тебе сказать - <span class="corrupted">123456</span> оставил какойто текстовый файл, посмотри его. Я буду ждать...`, "lightblue", time); time += 1;
+            log(`Disconnected`, 0, time); time += 1;
+
+            cmd("admin@newyear:~$ ", "cat c0mpl1m3nts.txt", c0mpl1m3nts_exec, time)
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        function lsla_exec(e) {
+            localStorage.setItem("stage", 3);
+            stage = 3;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log("drwxrwxrwx 1 root root 4096 Nov 21 01:12 .", 0, time); time += 10;
+            log("drwxr-xr-x 1 root root 4096 Nov 24 22:01 ..", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 9590 Nov 21 01:12 ai_core.hex", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 9840 Jan 01 00:01 compliments.crypted", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 1520 Nov 21 04:24 c0mpl1m3nts.txt", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 1430 Dec 16 00:49 credits.txt", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 2153 Nov 19 18:06 lastchance_ai.sh", 0, time); time += 10;
+            log("-rwxrwxrwx 1 root root 5540 Nov 24 00:17 newyear.sh", 0, time); time += 10;
+
+            cmd("admin@newyear:~$ ", "lastchance_ai.sh", lastchance_ai_exec, time)
+        }
+        ////////////////////////////////////////////////////////////////////////////////////
+        function newyear_exec(e) {
+            localStorage.setItem("stage", 2);
+            stage = 2;
+            if (e) {
+                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.classList.remove("click");
+            }
+            let time = 0;
+
+            log("Analysis of New Year mood...", 0, time); time += 2000;
+            log("[ERROR] New Year mood not found!", "red", time); time += 1;
+            log("Evaluation of the festive atmosphere...", 0, time); time += 2000;
+            log("[FATAL] Condition: terrible!", "red", time); time += 1;
+
+            cmd("admin@newyear:~$ ", "ls -la", lsla_exec, time)
+        }
+        /////////////////////////
+        function newyear_start(e) {
+            localStorage.setItem("stage", 1);
+            stage = 1;
+            cmd("admin@newyear:~$ ", "newyear.sh", newyear_exec, 0)
+        }
+
+
+        if (stage > 1) {
+            log("Session data recovery...", 0, 0);
+            log("Done!", 0, 1500);
+            setTimeout(function () {
+                switch (stage) {
+                    case 2:
+                        newyear_exec(null);
+                        break;
+                    case 3:
+                        lsla_exec(null);
+                        break;
+                    case 4:
+                        lastchance_ai_exec(null);
+                        break;
+                    case 5:
+                        c0mpl1m3nts_exec(null);
+                        break;
+                    case 6:
+                        lastchance_ai_exec2(null);
+                        break;
+                    case 7:
+                        lastchance_ai_exec3(null);
+                        break;
+                    case 8:
+                        lsla_exec2(null);
+                        break;
+                    case 9:
+                        clear_exec(null);
+                        break;
+                    default:
+                        newyear_start(null);
+                        break;
+                }
+            }, 2000);
+
+        } else {
+            newyear_start(null);
+        }
+
+
+    </script>
+</body>
+
+</html>
