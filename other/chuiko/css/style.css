@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 * {
-    font-family: 'Courier New', Courier, monospace !important;
+    font-family: 'Courier Prime', monospace !important;
+    font-weight: 0;
     color: rgb(196, 255, 186) !important;
 }
 
@@ -10,7 +12,7 @@ input {
     background-color: #111;
 }
 
-h1 {
+p {
     margin: 0 auto;
 }
 
@@ -35,15 +37,16 @@ body {
 }
 
 .corrupted {
+    font-family: 'Courier New', monospace !important;
     white-space: nowrap;
 }
 
 @keyframes textflicker {
     from {
-      text-shadow: 1px 0 0 #ea36af, -2px 0 0 #00c3ff;
+      text-shadow: 0.5px 0 0 #ea36af, -1px 0 0 #00c3ff;
     }
     to {
-      text-shadow: 2px 0.5px 2px #ea36af, -1px -0.5px 2px #00c3ff;
+      text-shadow: 1px 0.25px 1px #ea36af, -0.5px -0.25px 1px #00c3ff;
     }
   }
 

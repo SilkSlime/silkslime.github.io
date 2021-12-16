@@ -20,9 +20,13 @@
     <div id="snow" class="snowflakes" aria-hidden="true">
 
     </div>
+
     <script src="js/corrupt.js"></script>
     <script src="js/script.js"></script>
     <script>
+        var final = new Audio('assets/final_music.mp3');
+        final.volume = 0.1;
+
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         let user = params.nme ? params.nme : `<span class="corrupted">undefined</span>`;
@@ -39,7 +43,7 @@
         function restart() {
             terminal.innerHTML = '';
             snow.innerHTML = '';
-            
+
             newyear_start(null);
         }
         //////////////////////////////////////////////////////
@@ -53,15 +57,14 @@
             log("Лицензия: свободная, можно использовать и переиспользовать с одним условием - чтобы это было в хороших целях и дарило хорошее настроение! Для этого можно в GET запросе указать любое имя или вообще не указывать!", "white", time); time += 1000;
             log("Скоро можно будет перезапустить историю...", "white", time); time += 1000;
             log("Пора прощаться... Буду бесконечно рад фидбеку!", "white", time); time += 1000;
-            log("Пока пока!", "white", time); time += 1000;
+            log("Пока пока!", "white", time, true); time += 4000;
 
             cmd("admin@newyear:~$ ", "/root/restart.sh", restart, time);
 
         }
         //////////////////////////////////////////////////////
         function compliments(e) {
-            localStorage.setItem("stage", 9);
-            stage = 9;
+            final.play();
             let time = 0;
 
             snow.innerHTML = `<div class="snowflake">❅</div><div class="snowflake">❅</div>
@@ -78,7 +81,7 @@
                 log(`С первых секунд я запомнил, что ты - человек позитива и с большой страстью готов делиться этим позитивом с другими людьми!`, "white", time); time += 5000;
                 log(`Поэтому я хочу пожелать тебе оставаться таким же светлым человеком, какой ты сейчас!`, "white", time); time += 4000;
                 log(`Естественно еще и щщасться-здоровья, сейчас без этого вообще никуда, хаха!`, "white", time); time += 4000;
-                
+
 
             } else {
                 log(`Привет, друг!`, "white", time, 1); time += 5000;
@@ -88,7 +91,7 @@
             }
             log(`Делись своим внутренним огоньком с другими и гори ярко, занимаясь любимым делом!`, "white", time); time += 4000;
             log(`Естественно еще хочу пожелать тебе щщасться-здоровья, сейчас без этого вообще никуда, хаха!`, "white", time); time += 4000;
-            log(`Удачи и успехов тебе во всех начинаниях, продолжаниях и развитии! У тебя точно все получится - я в этом уверен!`, "white", time); time += 5000;
+            log(`Удачи и успехов тебе во всех начинаниях, продолжаниях и развитии! У тебя точно все получится - даже не сомневаюсь!`, "white", time); time += 5000;
             log(`Спасибо что прошел мою новогоднюю сказку до конца! Если что - можно было читерить, но я не думаю, что так было бы интереснее!`, "white", time); time += 5000;
             log(`А пока, вот и подошла к самому концу история... `, "white", time); time += 4000;
             log(`Сейчас ночь 16го декабря, а я сижу пишу последние слова! Во дела...`, "white", time); time += 4000;
@@ -100,6 +103,8 @@
         }
         //////////////////////////////////////////////////////
         function clear_exec(e) {
+            localStorage.setItem("stage", 9);
+            stage = 9;
             terminal.innerHTML = '';
             cmd("admin@newyear:~$ ", "cat compliments.txt", compliments, 0)
         }
@@ -312,10 +317,9 @@
                         lsla_exec2(null);
                         break;
                     case 9:
-                        compliments(null);
+                        clear_exec(null);
                         break;
                     default:
-                        console.log(123123)
                         newyear_start(null);
                         break;
                 }

@@ -1,7 +1,7 @@
-const debug = false;
+const debug = true;
 function log(txt, color = "rgb(196, 255, 186)", time = 0, type = false) {
     if (debug) time = 0;
-    let t = document.createElement('h1');
+    let t = document.createElement('p');
     t.style.setProperty('color', color, 'important');
     setTimeout(function () {
         terminal.appendChild(t);
