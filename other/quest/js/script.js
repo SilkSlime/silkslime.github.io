@@ -1,4 +1,4 @@
-const debug = true;
+const debug = false;
 function log(txt, color = "rgb(196, 255, 186)", time = 0, type = false) {
     if (debug) time = 0;
     let t = document.createElement('p');

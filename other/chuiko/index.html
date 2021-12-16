@@ -29,7 +29,7 @@
 
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
-        let user = params.nme ? params.nme : `<span class="corrupted">undefined</span>`;
+        let user = params.nme ? params.nme : `Рома`;
         let stage = localStorage.getItem("stage") ? parseInt(localStorage.getItem("stage")) : 0;
         let secret = "68 74 74 70 73 3a 2f 2f 73 69 6c 6b 73 6c 69 6d 65 2e 67 69 74 68 75 62 2e 69 6f 2f 6f 74 68 65 72 2f 63 68 75 69 6b 6f 2f 71 75 65 73 74 2f 6f 6c 64 5f 72 65 63 69 65 70 74 2e 74 78 74";
         let answer = "Light up your New Year fire to the fullest!";
@@ -54,7 +54,9 @@
             log("Telegram: <a href='https://t.me/SilkSlime'>@silkslime</a>", "white", time); time += 1000;
             log("vk: <a href='https://vk.com/silkslime'>vk.com/silkslime</a>", "white", time); time += 1000;
             log("email: <a href='mailto:silkslime@yandex.ru'>silkslime@yandex.ru</a>", "white", time); time += 1000;
-            log("Лицензия: свободная, можно использовать и переиспользовать с одним условием - чтобы это было в хороших целях и дарило хорошее настроение! Для этого можно в GET запросе указать любое имя или вообще не указывать!", "white", time); time += 1000;
+            log("Лицензия: свободная, можно использовать и переиспользовать с одним условием - чтобы это было в хороших целях и дарило хорошее настроение!", "white", time); time += 1000;
+            log("Для этого я сделал отдельный общий квест, хехе, там можно в GET запросе указать любое имя или вообще не указывать!", "white", time); time += 1000;
+            log("<a href='https://silkslime.github.io/other/quest/'>Ссылка на общий квест</a>", "white", time); time += 1000;
             log("Скоро можно будет перезапустить историю...", "white", time); time += 1000;
             log("Пора прощаться... Буду бесконечно рад фидбеку!", "white", time); time += 1000;
             log("Пока пока!", "white", time, true); time += 4000;
