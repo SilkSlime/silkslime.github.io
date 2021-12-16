@@ -30,7 +30,7 @@
                     Собственно на десерт припасен... <b>ПУДИНГ</b> !!!
                 </p>
                 <p>
-                   А сможешь ли ты понять, какой основной компонент знаменитого пудинга?
+                   А сможешь ли ты понять, какой секретный основной компонент из России этого знаменитого пудинга?
                 </p>
             </div>
             <p>
@@ -39,8 +39,8 @@
                     <input id="key">
                     <button id="sub">Скачать файл!</button>
                     <div style="color: red;" id="error"></div>
-                    <div id="goood">
-                        <a  style="color: green;" href="ghbdtn! gfhjkm - ишпырдуззфщдшмшу.i4got">Ссылка на скачивание будет доступна <span>93</span> секунд...</a>
+                    <div id="good">
+                        
                     </div>
                 </div>
             </p>
@@ -59,8 +59,10 @@
             let uin = k.value;
             if (uin.toLowerCase() == answer) {
                 er.innerHTML = "";
+                g.innerHTML =  `<a  style="color: green;" href="ghbdtn! gfhjkm - ишпырдуззфщдшмшу.i4got">Ссылка на скачивание будет доступна <span class="corrupted">93</span> секунд...</a>`;
             } else {
-                g.innerHTML = "";
+                er.innerHTML = "Неверный код доступа!!!";
+                setTimeout(function() {er.innerHTML=""}, 1500)
             }
         });
     </script>
