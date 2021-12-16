@@ -29,7 +29,7 @@
 
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
-        let user = params.nme ? params.nme : `дружище`;
+        let user = params.nme ? params.nme : `Дружище`;
         let stage = localStorage.getItem("stage") ? parseInt(localStorage.getItem("stage")) : 0;
         let secret = "68 74 74 70 73 3a 2f 2f 73 69 6c 6b 73 6c 69 6d 65 2e 67 69 74 68 75 62 2e 69 6f 2f 6f 74 68 65 72 2f 71 75 65 73 74 2f 71 75 65 73 74 2f 6f 6c 64 5f 72 65 63 69 65 70 74 2e 74 78 74";
         let answer = "Light up your New Year fire to the fullest!";
@@ -126,20 +126,20 @@
             inp.remove();
 
             log(txt, "yellow", time); time += 1000;
-            log(`[AI] Давно не виделись, ${user}, хах! `, "lightblue", time); time += 1000;
+            log(`[AI] Давно не виделись, ${user}, хах! `, "lightblue", time); time += 3000;
             log(`[AI] Так, что тут у нас! ${txt}? Интересно... Пару секунд, попробую расшифровать... `, "lightblue", time); time += 2500;
             if (txt == answer) {
-                log(`[AI] ДА!!! Проверил по хэшу, кажется верный ключ!`, "lightblue", time); time += 1000;
-                log(`[AI] Запускаю процесс полной дешифровки...`, "lightblue", time); time += 1000;
-                log(`Decryption started...`, 0, time); time += 1000;
+                log(`[AI] ДА!!! Проверил по хэшу, кажется верный ключ!`, "lightblue", time); time += 2000;
+                log(`[AI] Запускаю процесс полной дешифровки...`, "lightblue", time); time += 2000;
+                log(`Decryption started...`, 0, time); time += 500;
                 for (let i = 0; i <= 100; i += 10) {
                     log(`[${i}/100] Decrypting...`, 0, time); time += Math.floor(Math.random() * 5000);
                 }
                 log(`Decryption completed!`, 0, time); time += 1000;
-                log(`[AI] Что сказать, все получилось! Я же говорил что верю в тебя :)`, "lightblue", time); time += 1000;
-                log(`[AI] Теперь праздник спасен и все благодаря тебе! Ты заслужил поздравление!!`, "lightblue", time); time += 1000;
-                log(`[AI] Я пожалуй пойду, дальше ты справишься сам, а мне столько всего успеть нужно, ужас!`, "lightblue", time); time += 1000;
-                log(`[AI] Удачи и... спасибо!`, "lightblue", time); time += 1000;
+                log(`[AI] Что сказать, все получилось! Я же говорил что верю в тебя :)`, "lightblue", time); time += 4000;
+                log(`[AI] Теперь праздник спасен и все благодаря тебе! Ты заслужил поздравление!!`, "lightblue", time); time += 4000;
+                log(`[AI] Я пожалуй пойду, дальше ты справишься сам, а мне столько всего успеть нужно, ужас!`, "lightblue", time); time += 4000;
+                log(`[AI] Удачи и... спасибо!`, "lightblue", time); time += 5000;
                 log(`Disconnected`, 0, time); time += 1000;
 
                 cmd("admin@newyear:~$ ", "ls -la", lsla_exec2, time);
@@ -147,8 +147,8 @@
             } else {
                 stage = 6;
                 log(`[AI] Облом! Ключ не подошел, попробуй еще подумать.`, "lightblue", time); time += 1000;
-                log(`Standby mode activated`, 0, time); time += 1000;
-                let newcmd = log("", 0, time); time += 1000;
+                log(`Standby mode activated`, 0, time); time += 1;
+                let newcmd = log("", 0, time); time += 1;
                 let inp = document.createElement('input');
                 inp.id = "inp";
                 inp.style.width = "";
@@ -168,22 +168,22 @@
             let time = 0;
 
             log(`Connecting... `, 0, time); time += 1000;
-            log(`Done!`, 0, time); time += 1000;
+            log(`Done!`, 0, time); time += 500;
             log(`[AI] Привет, ${user}! `, "lightblue", time); time += 1000;
-            log(`[AI] Посмотрел тот файл? Я думаю в нем скрыта разгадка, но наверняка только ЧЕЛОВЕК сможет понять в чем суть...`, "lightblue", time); time += 1000;
-            log(`[AI] ${secret}...`, "lightblue", time); time += 1000;
-            log(`[AI] ...`, "lightblue", time); time += 1000;
-            log(`[AI] . . .`, "lightblue", time); time += 1000;
-            log(`[AI] . . . . .`, "lightblue", time); time += 1000;
-            log(`[AI] Нет, я совсем не могу ничего сделать.`, "lightblue", time); time += 1000;
-            log(`[AI] ${user}, ты должен спасти праздник!`, "lightblue", time); time += 1000;
-            log(`[AI] И Н А Ч Е. Н И К Т О. Э Т О. Н Е. С Д Е Л А Е Т.`, "lightblue", time); time += 1000;
-            log(`[AI] Так что... Я пока тут посижу, подожду... Напиши мне ключ расшифровки, как разберешься!`, "lightblue", time); time += 1000;
-            log(`[AI] Я верю в тебя! Удачи!`, "lightblue", time); time += 1000;
-            log(`Standby mode activated`, 0, time); time += 1000;
+            log(`[AI] Посмотрел тот файл? Я думаю в нем скрыта разгадка, но наверняка только ЧЕЛОВЕК сможет понять в чем суть...`, "lightblue", time); time += 5000;
+            log(`[AI] ${secret}...`, "lightblue", time); time += 3000;
+            log(`[AI] ...`, "lightblue", time); time += 4000;
+            log(`[AI] . . .`, "lightblue", time); time += 5000;
+            log(`[AI] . . . . .`, "lightblue", time); time += 6000;
+            log(`[AI] Нет, я совсем не могу ничего сделать.`, "lightblue", time); time += 3000;
+            log(`[AI] ${user}, ты должен спасти праздник!`, "lightblue", time); time += 3000;
+            log(`[AI] И Н А Ч Е. Н И К Т О. Э Т О. Н Е. С Д Е Л А Е Т.`, "lightblue", time); time += 3000;
+            log(`[AI] Так что... Я пока тут посижу, подожду... Напиши мне ключ расшифровки, как разберешься!`, "lightblue", time); time += 5000;
+            log(`[AI] Я верю в тебя! Удачи!`, "lightblue", time); time += 3000;
+            log(`Standby mode activated`, 0, time); time += 1;
 
             if (debug) time = 0;
-            let newcmd = log("", 0, time); time += 1000;
+            let newcmd = log("", 0, time); time += 1;
             let inp = document.createElement('input');
             inp.id = "inp";
             inp.style.width = "";
