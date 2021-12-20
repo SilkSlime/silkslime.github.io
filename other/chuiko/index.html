@@ -48,8 +48,12 @@
         }
         //////////////////////////////////////////////////////
         function credits(e) {
+            if (e) {
+                e.target.removeEventListener('click', credits, false);
+                e.target.classList.remove("click");
+            }
             let time = 0;
-            log("Спасибо что играл в историю, ты - лучший!", "white", time); time += 1000;
+            log("Спасибо что поучавствовал в моей истории, ты - лучший!", "white", time); time += 1000;
             log("С уважением, твой Санта, Тёма Панфилкин.", "white", time); time += 1000;
             log("Telegram: <a href='https://t.me/SilkSlime'>@silkslime</a>", "white", time); time += 1000;
             log("vk: <a href='https://vk.com/silkslime'>vk.com/silkslime</a>", "white", time); time += 1000;
@@ -66,6 +70,10 @@
         }
         //////////////////////////////////////////////////////
         function compliments(e) {
+            if (e) {
+                e.target.removeEventListener('click', compliments, false);
+                e.target.classList.remove("click");
+            }
             final.play();
             let time = 0;
 
@@ -76,22 +84,13 @@
                 <div class="snowflake">❆</div><div class="snowflake">❄</div>
             `;
 
-            if (user == "Рома") {
-                log(`Starting music... `, "white", time); time += 3000;
-                log(`Привет, ${user}!`, "white", time, 1); time += 5000;
-                log(`Поздравляю тебя с Новым 2022 Годом! `, "white", time); time += 3000;
-                log(`Первый раз я тебя увидел, когда поступал в ШП много лет назад учеником - ты проводил анонс у "абитуриентов") Хоть мне и не довелось лично пообщаться с тобой, я много наслышан и заочно, так сказать, знаком)`, "white", time); time += 6000;
-                log(`С первых секунд я запомнил, что ты - человек позитива и с большой страстью готов делиться этим позитивом с другими людьми!`, "white", time); time += 5000;
-                log(`Поэтому я хочу пожелать тебе оставаться таким же светлым человеком, какой ты сейчас!`, "white", time); time += 4000;
-                log(`Естественно еще и щщасться-здоровья, сейчас без этого вообще никуда, хаха!`, "white", time); time += 4000;
-
-
-            } else {
-                log(`Привет, друг!`, "white", time, 1); time += 5000;
-                log(`Поздравляю тебя с Новым Годом! `, "white", time); time += 3000;
-                log(`Хочу пожелать тебе оставаться таким же светлым человеком, какой ты сейчас, а я уверен - это так!`, "white", time); time += 4000;
-
-            }
+            log(`Starting music... `, "white", time); time += 3000;
+            log(`Привет, ${user}!`, "white", time, 1); time += 5000;
+            log(`Поздравляю тебя с Наступающим Новым 2022 Годом! `, "white", time); time += 3000;
+            log(`Первый раз я тебя увидел, когда поступал в ШП много лет назад учеником - ты проводил анонс у "абитуриентов") Хоть мне и не довелось лично пообщаться с тобой, я много наслышан о тебе (только хорошее, честно-честно) и заочно, так сказать, знаком)`, "white", time); time += 6000;
+            log(`С первых секунд я запомнил, что ты - человек позитива и с большой страстью готов делиться этим настроением с другими людьми!`, "white", time); time += 5000;
+            log(`Поэтому я хочу пожелать тебе оставаться таким же светлым человеком, какой ты сейчас!`, "white", time); time += 4000;
+            log(`Естественно еще и щщасться-здоровья, сейчас без этого вообще никуда, хаха!`, "white", time); time += 4000;
             log(`Делись своим внутренним огоньком с другими и гори ярко, занимаясь любимым делом!`, "white", time); time += 4000;
             log(`Естественно еще хочу пожелать тебе щщасться-здоровья, сейчас без этого вообще никуда, хаха!`, "white", time); time += 4000;
             log(`Удачи и успехов тебе во всех начинаниях, продолжаниях и развитии! У тебя точно все получится - даже не сомневаюсь!`, "white", time); time += 5000;
@@ -102,7 +101,8 @@
             log(`XOXO,`, "white", time, true); time += 3000;
             log(`Твой Санта`, "white", time, true); time += 7000;
 
-            cmd("admin@newyear:~$ ", "cat credits.txt", credits, time);
+            log(`P.S.: credits.txt раскроет личность Тайного Санты...`, "white", time); time += 5000;
+            cmd("admin@newyear:~$ ", "cat /root/credits.txt", credits, time);
         }
         //////////////////////////////////////////////////////
         function clear_exec(e) {
@@ -116,7 +116,7 @@
             localStorage.setItem("stage", 8);
             stage = 8;
             if (e) {
-                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.removeEventListener('click', lsla_exec2, false);
                 e.target.classList.remove("click");
             }
             let time = 0;
@@ -149,8 +149,8 @@
                     log(`[${i}/100] Decrypting...`, 0, time); time += Math.floor(Math.random() * 5000);
                 }
                 log(`Decryption completed!`, 0, time); time += 1000;
-                log(`[AI] Что сказать, все получилось! Я же говорил что верю в тебя :)`, "lightblue", time); time += 4000;
-                log(`[AI] Теперь праздник спасен и все благодаря тебе! Ты заслужил поздравление!!`, "lightblue", time); time += 4000;
+                log(`[AI] Что сказать, все получилось! Я же говорил, что верю в тебя :)`, "lightblue", time); time += 4000;
+                log(`[AI] Теперь праздник спасен - и все благодаря тебе! Ты заслужил поздравление!!`, "lightblue", time); time += 4000;
                 log(`[AI] Я пожалуй пойду, дальше ты справишься сам, а мне столько всего успеть нужно, ужас!`, "lightblue", time); time += 4000;
                 log(`[AI] Удачи и... спасибо!`, "lightblue", time); time += 5000;
                 log(`Disconnected`, 0, time); time += 1000;
@@ -175,7 +175,7 @@
             stage = 6;
             localStorage.setItem("stage", 6);
             if (e) {
-                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.removeEventListener('click', lastchance_ai_exec2, false);
                 e.target.classList.remove("click");
             }
             let time = 0;
@@ -208,7 +208,7 @@
             localStorage.setItem("stage", 5);
             stage = 5;
             if (e) {
-                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.removeEventListener('click', c0mpl1m3nts_exec, false);
                 e.target.classList.remove("click");
             }
             let time = 0;
@@ -241,7 +241,7 @@
             log(`[AI] Видишь? Файлик compliments.crypted зашифрован! Я ничего не могу сделать, моих мощностей не хватит на перебор вариантов.`, "lightblue", time); time += 2000;
             log(`[AI] Тут единственный вариант - найти ключ для дешифровки, а дальше я уж как нибудь сам!`, "lightblue", time); time += 2000;
             log(`[AI] Помоги вернуть поздравление! Найди ключ дешифровки!`, "lightblue", time); time += 2000;
-            log(`[AI] Все, что я могу тебе сказать - <span class="corrupted">123456</span> оставил какойто текстовый файл, посмотри его. Я буду ждать...`, "lightblue", time); time += 1;
+            log(`[AI] Все, что я могу тебе сказать - <span class="corrupted">123456</span> оставил какой-то текстовый файл, посмотри его. Я буду ждать...`, "lightblue", time); time += 1;
             log(`Disconnected`, 0, time); time += 1;
 
             cmd("admin@newyear:~$ ", "cat c0mpl1m3nts.txt", c0mpl1m3nts_exec, time)
@@ -252,7 +252,7 @@
             localStorage.setItem("stage", 3);
             stage = 3;
             if (e) {
-                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.removeEventListener('click', lsla_exec, false);
                 e.target.classList.remove("click");
             }
             let time = 0;
@@ -273,7 +273,7 @@
             localStorage.setItem("stage", 2);
             stage = 2;
             if (e) {
-                e.target.removeEventListener('click', lastchance_ai_exec, false);
+                e.target.removeEventListener('click', newyear_exec, false);
                 e.target.classList.remove("click");
             }
             let time = 0;
