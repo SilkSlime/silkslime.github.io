@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/story.js"></script>
+</head>
+
+<body>
+    <div class="uk-section">
+        <div class="uk-container uk-container-xlarge" id="story">
+        </div>
+    </div>
+    <script>
+    class Story {
+        constructor(field) {
+            this.field = field;
+            this.timer = 0;
+            this.stage = 0;
+            this.stages = [];
+            this.load();
+        }
+
+        save() {
+            localStorage.setItem("stage", this.stage);
+        }
+
+        load() {
+            if (localStorage.getItem("stage")) {
+                this.stage = localStorage.getItem("stage");
+            } else this.stage = 0;
+            this.save();
+        }
+        
+        start() {
+            this.stages[this.stage]();
+        }
+
+        addStage(func, stage) {
+            this.stages[stage] = func;
+        }
+
+        print(text, who="story", speed=30, color=null) {
+            for (let reply of text.split("\n")) {
+                reply = reply.trim();
+                if (reply) {
+                    if (who != "story") reply = `[${who}] ` + reply;
+                    let textElement = document.createElement("div");
+                    textElement.classList.add("reply");
+                    textElement.classList.add(who);
+                    if (color) {
+                        textElement.style.setProperty('color', color, 'important');
+                    }
+                    this.field.appendChild(textElement);
+                    for (let i = 0; i < reply.length; i++) {
+                        setTimeout(function() {textElement.innerHTML+=reply.charAt(i);}, this.timer+speed*i);
+                    }
+                    this.timer += speed*(reply.length-1);
+                }
+            }
+        }
+        
+        input(nextstage) {
+            let input = document.createElement("input");
+            this.field.appendChild(input);
+            input.style.display = "none";
+            input.addEventListener("keydown", function(e){
+                if (e.key == "Enter") {
+                    story.timer = 0;
+                    story.print(e.target.value, "story", 1, "red");
+                    e.target.remove();
+                    story.stages[nextstage](e.target.value);
+                }
+            })
+            setTimeout(function() {input.style.display = "block"}, this.timer);
+        }
+    }
+
+    let story = new Story(document.querySelector("#story"));
+
+    story.addStage(function() {
+        story.timer = 0;
+        story.print(`stage 0`, "TEST");
+        story.print(`stage 0`, "TEST");
+        story.input(1);
+    }, 0);
+
+    story.addStage(function(i) {
+        story.timer = 0;
+        story.print(`stage 1: ${i}`, "TEST");
+    }, 1);
+
+    story.start();
+
+    
+    </script>
+</body>
+
+</html>
