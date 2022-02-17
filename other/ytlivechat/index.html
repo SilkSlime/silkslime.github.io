@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>YouTube LiveChat Parser</title>
+</head>
+
+<body>
+    <div id="app" class="container" style="text-align: center;">
+        <h1 class="display-4 mt-3">YouTube LiveChat Parser</h1>
+        <div class="card my-3">
+            <div class="card-body">
+                <h5 class="card-title">Комментарии:</h5>
+                <textarea @input="process" v-model="messages" style="border: 1px solid lightgray; width: 100%;"
+                    rows="10" placeholder="Много-много комментариев..."></textarea>
+            </div>
+        </div>
+        <div class="card my-3">
+            <div class="card-body">
+                <h5 class="card-title">Статистика:</h5>
+                <div style="text-align: left;">
+                    <div v-for="data in authors" class="my-3">
+                        <div class="card-body">
+                            <div>
+                                <span v-for="status in data.status_list" class="badge mx-1" style="border: 1px solid gray; color: black; font-size: medium;">{{status}}</span> 
+                            </div>
+                            <h6 class="card-title">{{data.author}}<span v-if="data.aka"> aka {{data.aka}}</span> написал(а) {{data.comments_count}} шт. комментариев на {{data.symbols_count}} шт. символов:</h6>
+                            <ul class="list-group">
+                                <li v-for="comment in data.comments" class="list-group-item">{{comment}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                messages: '',
+                authors: {},
+                aka: {
+                    "Shadowk 1337": "Федоров Роман",
+                    "lalaa mala": "Смирнов Владислав",
+                    "CoraL77": "Кутаев Кирилл",
+                    "Обри": "Комлев Илья",
+                    "Konstantin Zhurov": "Журов Константин",
+                    "Meme Theme": "Василенко Никита",
+                    "AAAAAA": "AAAAAA",
+                }
+            },
+            methods: {
+                process() {
+                    let authors = {}
+                    messages = this.messages.trim();
+                    messages_splitted = messages.split('\n\n');
+                    for (let i in messages_splitted) {
+                        let message_raw = messages_splitted[i];
+                        message_splitted = message_raw.split('\n');
+                        if (message_splitted.length == 2) {
+                            let author = message_splitted[0];
+                            let comment = message_splitted[1];
+                            let status_list = [];
+                            if (i == 0) {
+                                status_list.push("🗡️ First Blood")
+                            }
+                            if (author == "Артём Панфилкин") {
+                                status_list.push("❤️")
+                            }
+                            if (!authors[author]) {
+                                authors[author] = {
+                                    author: author,
+                                    aka: this.aka[author],
+                                    comments: [],
+                                    status_list: status_list,
+                                    comments_count: 0,
+                                    symbols_count: 0,
+                                }
+                            }
+                            authors[author].comments.push(comment);
+                            authors[author].comments_count++;
+                            authors[author].symbols_count+=comment.length;
+
+                        }
+                    }
+                    
+                    let authors_list = [];
+                    for (let author in authors) {
+                        authors_list.push(authors[author]);
+                    }
+
+                    authors_list.sort((a, b) => (a.symbols_count < b.symbols_count) ? 1 : (a.symbols_count == b.symbols_count) ? ((a.comments_count < b.comments_count) ? 1 : -1) : -1 );
+                    if (authors_list.length > 0) {
+                        authors_list[0].status_list.push("🪗 RRRAGE!")
+                    }
+
+                    authors_list.sort((a, b) => (a.comments_count < b.comments_count) ? 1 : (a.comments_count == b.comments_count) ? ((a.symbols_count < b.symbols_count) ? 1 : -1) : -1 )
+                    if (authors_list.length > 0) authors_list[0].status_list.push("🥇Emperor")
+                    if (authors_list.length > 1) authors_list[1].status_list.push("🥈King")
+                    if (authors_list.length > 2) authors_list[2].status_list.push("🥉Prince")
+                    
+
+                    this.authors = authors_list;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
