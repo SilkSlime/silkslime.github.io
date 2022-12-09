@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DME-Buses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .bar {
+            display: flex;
+            gap: 0px 10px;
+        }
+
+        #app {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px 0px;
+        }
+
+        .buses {
+            display: flex;
+            flex-direction: column;
+            gap: 5px 10px;
+            height: calc(100vh - 30px - 38px - 10px - 30px - 38px - 10px);
+            overflow-y: scroll;
+        }
+
+        .lab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 10px;
+        }
+
+        .est {
+            text-align: right;
+            background-color: rgb(152, 255, 174);
+            padding: 0 10px 0 0;
+        }
+
+        .card {
+            padding: 0
+        }
+
+        .card-muted {
+            background-color: rgba(0, 0, 0, 0.1)
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="bar">
+            <select v-model="c_route_name" class="form-select">
+                <option v-for="route in routes" :value="route.name">{{route.name.split('_').join(' -> ')}}</option>
+            </select>
+        </div>
+        <div class="bar">
+
+            <select v-model="c_dof" class="form-select">
+                <option v-for="dof in dofs" :value="dof.key">{{dof.value}}</option>
+            </select>
+            <select v-model="c_hours" class="form-select">
+                <option v-for="hour in 24" :value="hour-1">{{(hour-1).toString().padStart(2, '0')}}</option>
+            </select>
+            <select v-model="c_minutes" class="form-select">
+                <option v-for="minute in 60" :value="minute-1">{{(minute-1).toString().padStart(2, '0')}}</option>
+            </select>
+        </div>
+        <div class="buses">
+            <div v-for="(bus, index) in c_buses" :id="`bus_${index}`" :class="{card: true, 'card-body': true, 'card-muted': bus.time-c_time <= 0}">
+                <div v-if="isNear(bus.time)" class="est">Через {{ Math.floor((bus.time-c_time)/60) }} мин</div>
+                <div class="lab">
+                    <div>{{bus.name}}</div>
+                    <div>{{secToTime(bus.time)}}</div>
+                </div>
+                <div v-if="((c_time-bus.time)>0)&&((c_time-bus.time)/60 < 15)" style="padding: 0 10px;">
+                    <input type="range" class="form-range" min="0" max="15" :value="(c_time-bus.time)/60" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="routes.js"></script>
+    <script>
+        let current_date = new Date();
+        let current_secs = current_date.getSeconds() + (60 * current_date.getMinutes()) + (60 * 60 * current_date.getHours());
+        let current_dof = current_date.getDay()
+
+        let route_name = 'Северная_Станция'
+
+        const { createApp } = Vue
+        let date = new Date();
+        let app = createApp({
+            data() {
+                return {
+                    dofs: [{ key: 1, value: "Понедельник" }, { key: 2, value: "Вторник" }, { key: 3, value: "Среда" }, { key: 4, value: "Четверг" }, { key: 5, value: "Пятница" }, { key: 6, value: "Суббота" }, { key: 0, value: "Воскресенье" }],
+                    routes: routes,
+                    c_dof: date.getDay(),
+                    c_hours: date.getHours(),
+                    c_minutes: date.getMinutes(),
+                    c_route_name: routes[0].name,
+                    c_nearest: 0
+                }
+            },
+            computed: {
+                c_buses() {
+                    if (this.c_hours + this.c_minutes) { }
+                    let r = routes.find((x) => x.name == this.c_route_name).buses.sort((a, b) => a.time - b.time).filter((x) => x.dofs.includes(this.c_dof))
+                    setTimeout(() => {
+                        document.getElementById(`bus_${r.findIndex((x) => this.isNear(x.time))}`).scrollIntoView()
+                    }, 100)
+                    return r
+                    // .filter((x) => x.time > current_secs && x.time < current_secs + max_est)
+                },
+                c_time() {
+                    return this.c_hours * 60 * 60 + this.c_minutes * 60
+                }
+            },
+            methods: {
+                secToTime(sec) {
+                    return `${Math.floor(sec / 60 / 60).toString().padStart(2, '0')}:${Math.floor(sec / 60 % 60).toString().padStart(2, '0')}`
+                },
+                isNear(bus_time) {
+                    return bus_time - this.c_time > 0 && Math.floor((bus_time - this.c_time) / 60 / 60) == 0
+                }
+            },
+            watch: {
+                c_nearest(n, o) {
+                    console.log(n)
+                }
+            },
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
