@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Неоновые светильники</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
+    }
+    .card {
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #1e1e1e;
+      width: 200px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    }
+    .card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      border: 1px solid #333;
+    }
+    .card a {
+      text-decoration: none;
+      color: #82aaff;
+      font-weight: bold;
+    }
+    .card a:hover {
+      text-decoration: underline;
+    }
+    .price {
+      color: #4caf50;
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+    .description {
+      color: #b0bec5;
+      font-size: 0.9em;
+    }
+  </style>
+  
+</head>
+<body>
+  <h1 style="text-align: center; margin-top: 20px;">Неоновые светильники</h1>
+  <p style="text-align: center; margin-top: 20px;">
+    Чтобы крепилась на стену через НАНОСКОТЧ (лента прозрачная такая)
+  </p>
+  <div class="container" id="product-container"></div>
+
+  <script>
+    // Массив товаров
+    const products = [
+      {
+        image: "https://static.tildacdn.com/stor6633-3135-4165-a366-383433656461/22316772.jpg",
+        name: "Не молчи",
+        link: "https://moscowneon.ru/nadpisi-na-stenu/tproduct/452797959-364358966682-neonovaya-viveska-s-nadpisyu-ne-molchi-9",
+        price: "8 890р.",
+        description: "Как на картинке (96 х 20 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/stor6361-3562-4766-b039-626436336634/94414878.jpg",
+        name: "Это твой vibe",
+        link: "https://moscowneon.ru/nadpisi-na-stenu/tproduct/452797959-901277536772-neonovaya-viveska-s-nadpisyu-eto-tvoi-vi",
+        price: "7 190р.",
+        description: "Как на картинке (35 х 36 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/stor3334-3362-4139-b531-326539346233/44215845.jpg",
+        name: "Это по любви",
+        link: "https://moscowneon.ru/dlya-doma/tproduct/444231558-692524952082-neonovaya-viveska-s-nadpisyu-eto-po-lyub",
+        price: "10 990р.",
+        description: "Подложка по контуру, цвет теплый белый (120 х 27 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/stor3435-3032-4338-b165-396435616164/44169307.jpg",
+        name: "What if it all works out",
+        link: "https://moscowneon.ru/dlya-doma/tproduct/444231558-785937631991-neonovaya-viveska-s-nadpisyu-what-if-it",
+        price: "16 190р.",
+        description: "Как на картинке (100 х 34 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/stor3563-6438-4164-a631-633038353330/10461227.jpg",
+        name: "Фламинго",
+        link: "https://moscowneon.ru/dlya-doma/tproduct/444231558-746377841861-neonovaya-viveska-flamingo-46-h-63-sm",
+        price: "6 190р.",
+        description: "Как на картинке (46 х 63 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/stor3030-3832-4230-b530-363936613433/69665205.jpg",
+        name: "Жепа",
+        link: "https://moscowneon.ru/dlya-doma/tproduct/444231558-210439049401-neonovaya-viveska-figura-zhenskogo-tela",
+        price: "7 190р.",
+        description: "Как на картинке (35 х 50 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/tild3538-3039-4065-a135-306361353763/IMG_5094.png",
+        name: "Амогус",
+        link: "https://moscowneon.ru/svetilniki/tproduct/436627471-239325886221-neonovii-svetilnik-kosmonavt-among-us-am",
+        price: "4 190р.",
+        description: "Как на картинке (20 х 24 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/stor3031-3664-4662-a162-373866303832/58674610.jpg",
+        name: "Сотворение Адама",
+        link: "https://moscowneon.ru/dlya-doma/tproduct/444231558-265216035781-neonovaya-viveska-dve-ruki-iz-sotvoreniy",
+        price: "15 990р.",
+        description: "Теплый белый (не желтый) (130 х 44 см.)"
+      },
+      {
+        image: "https://static.tildacdn.com/stor3739-3636-4336-b066-636636616561/42312611.jpg",
+        name: "Катана",
+        link: "https://moscowneon.ru/dlya-kafe-i-kofeen/tproduct/436782551-838802985411-neonovaya-viveska-katana-samuraiskii-mec",
+        price: "26 890р.",
+        description: "Как на картинке (160 х 65 см.)"
+      }
+    ];
+
+    // Контейнер для карточек
+    const container = document.getElementById("product-container");
+
+    // Генерация карточек товаров
+    products.forEach(product => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <img src="${product.image}" alt="Product Image">
+        <a href="${product.link}" target="_blank">${product.name || "Ссылка"}</a>
+        <div class="price">${product.price || ""}</div>
+        <div class="description">${product.description || ""}</div>
+      `;
+
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
