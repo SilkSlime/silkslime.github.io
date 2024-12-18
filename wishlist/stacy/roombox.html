@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Очаровательные румбоксы</title>
+  <style>
+html, body {
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    #fff,
+    #fff 10px,
+    #ffe6f2 10px,
+    #ffe6f2 20px
+  );
+  background-size: cover;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  color: #d48ea6;
+  font-size: 2em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+p.intro {
+  text-align: center;
+  margin: 20px;
+  font-size: 1.2em;
+  color: #a64d79;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 15px;
+  border-radius: 10px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 6px rgba(200, 150, 170, 0.3);
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.card {
+  border: 1px solid #f3cce3;
+  border-radius: 10px;
+  background-color: #fff;
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 6px 8px rgba(200, 150, 170, 0.4);
+}
+
+.card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  border: 1px solid #f3cce3;
+  margin-bottom: 15px;
+}
+
+.card a {
+  text-decoration: none;
+  color: #d48ea6;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+.price {
+  color: #b35f7a;
+  font-size: 1.3em;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.description {
+  color: #666;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Очаровательные румбоксы</h1>
+  <p class="intro">
+    🌸 Привет! Это мой небольшая подборочка с румбоксами, которые мне очень нравятся. Надеюсь, эта страничка поможет сделать выбор 💖<br>(сердечками отмечены те, которые больше всего понравились)
+  </p>
+  
+  <div class="container" id="product-container"></div>
+
+  <script>
+    // Массив товаров (румбоксы)
+    const products = [
+      {
+        name: "❤️ Coffee house",
+        link: "https://leonardo.ru/ishop/good_61864661822/",
+        image: "https://hobby-day.ru/image/cache/catalog/foto/roombox/IMG79b90aa381439a493dc86b8b82b4f309-1200x800.jpg",
+        price: "3588р.",
+        description: ""
+      },
+      {
+        name: "❤️ Студия звукозаписи",
+        link: "https://leonardo.ru/ishop/good_69491571934/",
+        image: "https://hobby-day.ru/image/cache/catalog/foto/roombox/IMGe5be8b3428d2ec85149aaf8fe0d95ff3-1200x800.jpg",
+        price: "3096р.",
+        description: ""
+      },
+      {
+        name: "❤️ Ванильное небо",
+        link: "https://leonardo.ru/ishop/good_76242440444/",
+        image: "https://hobby-day.ru/image/cache/catalog/foto/roombox/IMGc10aa2c12bb0a2568ecc1197acaa071b-1200x800.png",
+        price: "3588р.",
+        description: ""
+      },
+      {
+        name: "Зимний сад",
+        link: "https://leonardo.ru/ishop/good_119448879014/",
+        image: "https://hobby-day.ru/image/cache/catalog/newroom/roombox/IMGa7be8ed81169b8a02585d3915c796377-1200x800.jpg",
+        price: "3588р.",
+        description: ""
+      },
+      {
+        name: "Coffee time",
+        link: "https://leonardo.ru/ishop/good_83162475684/",
+        image: "https://hobby-day.ru/image/cache/catalog/foto/roombox/IMG857131ace1f95d67d4d6fceb52c64102-1200x800.jpg",
+        price: "2090р.",
+        description: ""
+      },
+      {
+        name: "Блоггер Хаус",
+        link: "https://leonardo.ru/ishop/good_124013687004/",
+        image: "https://hobby-day.ru/image/cache/catalog/newroom/roombox/IMGf665932a0478c10d01ab315dc1b969db-1200x800.jpg",
+        price: "3590р.",
+        description: ""
+      },
+      {
+        name: "Домик на дереве",
+        link: "https://leonardo.ru/ishop/good_124013658584/",
+        image: "https://hobby-day.ru/image/cache/catalog/newroom/roombox/IMG3a2afaf5ce005dcc892ddba49cfe268e-1200x800.jpg",
+        price: "7186р.",
+        description: ""
+      },
+      {
+        name: "Фонарик \"Беседка у моря\"",
+        link: "https://leonardo.ru/ishop/good_65963939864/",
+        image: "https://hobby-day.ru/image/cache/catalog/newroom/roombox/IMG5813ca03a5b379510378f45687bdf34f-1200x800.jpg",
+        price: "1788р.",
+        description: ""
+      }
+    ];
+
+    const container = document.getElementById("product-container");
+
+    products.forEach(product => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <img src="${product.image}" alt="Roombox Image">
+        <a href="${product.link}" target="_blank">${product.name}</a>
+        <div class="price">${product.price}</div>
+        <div class="description">${product.description}</div>
+      `;
+
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
