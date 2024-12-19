@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Неоновые светильники</title>
+    <style>
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        /* Background image, repeated and fixed */
+        background: url("./pa.jpg") fixed;
+        background-size: cover;
+        color: #e0e0e0;
+      }
+
+      h1,
+      p,
+      h2 {
+        text-align: center;
+        margin-top: 20px;
+        color: #e0e0e0;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        justify-content: center;
+      }
+
+      /* Neon colors: Magenta (#ff00ff) and Cyan (#00ffff) */
+
+      /* Card styles with glass effect */
+      .card {
+        position: relative;
+        width: 200px;
+        padding: 15px;
+        text-align: center;
+        border-radius: 5px;
+        background: rgba(20, 20, 20, 0.5);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        /* Neon border and glow */
+        border: 2px solid #00ffff;
+        box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        border: 1px solid #333;
+      }
+
+      /* Links inside normal product section */
+      .card a {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        color: #ff00ff;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .card a:hover {
+        text-decoration: none;
+        color: #00ffff;
+      }
+
+      .price {
+        color: #00ffbb; /* Neon-like greenish-cyan */
+        font-size: 1.2em;
+        margin: 10px 0;
+      }
+
+      .description {
+        color: #b0bec5;
+        font-size: 0.9em;
+      }
+
+      /* Neon Flicker Animation */
+      @keyframes neonFlicker {
+        0%,
+        100% {
+          box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+        }
+        2% {
+          box-shadow: 0 0 8px #00ffff, 0 0 15px #00ffff;
+        }
+        8% {
+          box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+        }
+        10%,
+        20% {
+          box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+        }
+        22% {
+          box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff;
+        }
+        25% {
+          box-shadow: 0 0 15px #00ffff, 0 0 25px #00ffff;
+        }
+        30% {
+          box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        }
+        40% {
+          box-shadow: 0 0 12px #00ffff, 0 0 22px #00ffff;
+        }
+        50% {
+          box-shadow: 0 0 8px #00ffff, 0 0 15px #00ffff;
+        }
+        60% {
+          box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        }
+        70% {
+          box-shadow: 0 0 15px #00ffff, 0 0 25px #00ffff;
+        }
+        80% {
+          box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+        }
+        90% {
+          box-shadow: 0 0 12px #00ffff, 0 0 22px #00ffff;
+        }
+      }
+
+      .card:hover {
+        animation: neonFlicker 2s infinite ease-in-out;
+      }
+
+      /* NO LINK SECTION */
+      .no-link-heading {
+        text-align: center;
+        color: #ff00ff;
+        margin-top: 50px;
+      }
+
+      .no-link .card a {
+        display: none;
+      }
+
+      .no-link .card .product-name {
+        font-weight: bold;
+        color: #ff00ff;
+        margin-top: 10px;
+        font-size: 1.1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Неоновые светильники</h1>
+    <p>
+      Чтобы крепилась на стену через НАНОСКОТЧ (лента прозрачная такая)<br />Также
+      лучше с диммером... Чтобы на весь двор не светила!
+    </p>
+    <div class="container" id="product-container"></div>
+    <h2 class="no-link-heading">Тут ссылок нет, но есть идеи!</h2>
+    <p>
+      (можно поискать по фотке и найти готовый, либо заказать на том же
+      moscowneon)
+    </p>
+    <div class="container no-link" id="product-container-nolink"></div>
+    <script>
+      const products = [
+        {
+          image:
+            "https://static.tildacdn.com/stor3962-3532-4961-a536-653936343531/91897152.jpg",
+          name: "Кот",
+          link: "https://moscowneon.ru/dlya-doma/tproduct/444231558-975683870221-neonovaya-viveska-kot-43-h-315-sm",
+          price: "5 890р.",
+          description:
+            "Подложка по контуру, (43 х 31,5 см.), Цвет: синий; бирюзовый; голубой; розовый",
+        },
+        {
+          image:
+            "https://static.tildacdn.com/stor6136-3330-4033-a164-373538383734/86986714.jpg",
+          name: "Всё хорошо",
+          link: "https://moscowneon.ru/ierogliphy/tproduct/467171367-809838772251-neonovaya-viveska-koreiskie-ieroglifi-vs",
+          price: "7 890р.",
+          description:
+            "Прямоугольная подложка, (20 х 70 см.), Цвет: Белый теплый",
+        },
+        {
+          image:
+            "https://static.tildacdn.com/stor6364-3230-4939-a433-313561636365/73154272.jpg",
+          name: "Приветствие",
+          link: "https://moscowneon.ru/dlya-doma/tproduct/444231558-258862626742-neonovii-svetilnik-emoji-kaomodzi-privet",
+          price: "5 190р.",
+          description:
+            "Прямоугольная подложка, (45 х 15 см.), Цвет: желтый, оранжевый",
+        },
+        {
+          image:
+            "https://optim.tildacdn.com/stor3033-3833-4666-b634-393836353735/-/format/webp/89708936.jpg",
+          name: "Планета",
+          link: "https://neon.boutique/neon-market/tproduct/790099800-580263133671-neonovaya-viveska-planeta?__cf_chl_rt_tk=pzoGH4fFBRXpkn8YTBoTw1DjuuwwhC5sdRqaFcjcmUA-1734633448-1.0.1.1-gp3ZXVp5XSF17siSWIMTJgvx4BcsmgNH8pck2WgGjHY",
+          price: "5 900р.",
+          description:
+            "Подложка по контуру, (39 х 23 см.), Цвет: оранжевый, розовый",
+        },
+      ];
+
+      const noLinkProducts = [
+        {
+          image:
+            "https://ae04.alicdn.com/kf/S43aa597a190f4884a071429a44e0ac1fB.jpg_640x640.jpg",
+          name: "Цветок",
+          price: "???р.",
+          description: "Цвета как на фото, Высота ~ 30 см",
+        },
+        {
+          image:
+            "https://ae04.alicdn.com/kf/Sb17b289d5add4f87bf8dca849925e308y.jpg",
+          name: "Котик с баббл ти",
+          price: "???р.",
+          description: "Цвета как на фото, Высота ~ 40-50 см",
+        },
+        {
+          image:
+            "https://ae04.alicdn.com/kf/Sa5b40efd9b1b4f1eaf15d4c378696b6aC.jpg_640x640.jpg",
+          name: "🫰❤️",
+          price: "???р.",
+          description: "Цвета как на фото, Высота ~ 25-30 см",
+        },
+        {
+          image:
+            "https://ae04.alicdn.com/kf/Hd4cca52185a248bb89899878105ddfb1s.jpg",
+          name: "Облачко",
+          price: "???р.",
+          description:
+            "Цвет: теплый белый, Размер ~ 25х15 см. Почему не могу взять готовый за 600 ры: Не нравится место стыка в левом нижнем углу, хочется чтобы контур был единым, при этом форма облака осталась именно такой",
+        },
+      ];
+
+      // Контейнер для карточек с ссылками
+      const container = document.getElementById("product-container");
+
+      // Генерация карточек товаров с ссылками
+      products.forEach((product) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+        <img src="${product.image}" alt="Product Image">
+        <a href="${product.link}" target="_blank">${
+          product.name || "Ссылка"
+        }</a>
+        <div class="price">${product.price || ""}</div>
+        <div class="description">${product.description || ""}</div>
+      `;
+        container.appendChild(card);
+      });
+
+      // Контейнер для карточек без ссылок
+      const noLinkContainer = document.getElementById(
+        "product-container-nolink"
+      );
+
+      // Генерация карточек товаров без ссылок
+      noLinkProducts.forEach((product) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+        <img src="${product.image}" alt="Product Image">
+        <div class="product-name">${product.name || ""}</div>
+        <div class="price">${product.price || ""}</div>
+        <div class="description">${product.description || ""}</div>
+      `;
+        noLinkContainer.appendChild(card);
+      });
+    </script>
+  </body>
+</html>
