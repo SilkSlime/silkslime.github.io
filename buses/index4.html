@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DME-Buses - Расписание</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevent bouncing on mobile */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Full height of viewport */
+        }
+
+        .status-messages {
+            flex-shrink: 0; /* Don't shrink status messages */
+            padding: 0.5rem 0.75rem;
+        }
+        .status-messages .alert {
+            margin-bottom: 0;
+            font-size: 0.85rem;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .controls-bar {
+            flex-shrink: 0; /* Don't shrink controls */
+            padding: 0.5rem 0.75rem 0.75rem;
+            background-color: #1c1c1c; /* Slightly different shade for controls background */
+            border-bottom: 1px solid #333;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .bar:last-child {
+            margin-bottom: 0;
+        }
+
+        .buses {
+            flex-grow: 1; /* Takes remaining space */
+            overflow-y: auto; /* Scroll only this area */
+            padding: 10px 0.75rem;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+        .buses-empty-state {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: #777;
+        }
+
+
+        .card {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-body {
+            padding: 10px 15px;
+        }
+
+        .card-muted { /* For buses past the selected time */
+            background-color: #222;
+            opacity: 0.6;
+        }
+        .card-muted .est, .card-muted .departed-status {
+            opacity: 0.7;
+        }
+
+
+        .est { /* "Через X мин" */
+            background-color: #00796b; /* Teal accent */
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        .lab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.05em;
+        }
+
+        .lab .bus-name {
+            font-weight: 500;
+            flex-grow: 1;
+            margin-right: 10px; /* Space between name and time */
+        }
+
+        .lab .bus-time {
+            font-family: 'SF Mono', 'Monaco', 'Consolas', 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #a5d6a7; /* Light green for time */
+        }
+
+        .form-select {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #555;
+            font-size: 0.9rem; /* Slightly smaller font for selects */
+        }
+        .form-select.form-select-lg {
+            font-size: 1rem; /* Restore for main route select */
+        }
+
+        .form-select:focus {
+            background-color: #444;
+            color: #e0e0e0;
+            border-color: #0d6efd; /* Bootstrap primary blue */
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .form-select option {
+            background-color: #333; /* Note: Styling options is limited */
+            color: #e0e0e0;
+        }
+        
+        .departed-status { /* Container for "Departed X min ago" and progress */
+            margin-top: 8px;
+        }
+        .departed-status small {
+            font-size: 0.8em;
+            color: #9e9e9e; /* Muted text color */
+        }
+        .departed-progress-container {
+            margin-top: 4px;
+        }
+        .departed-progress {
+            height: 4px;
+            background-color: #555; 
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .departed-progress-bar {
+            height: 100%;
+            background-color: #c62828; /* Reddish for departed */
+            width: 0%; /* Set by style binding */
+            transition: width 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container-fluid p-0">
+        <div class="status-messages">
+            <div v-if="locationStatus === 'pending'" class="alert alert-info">
+                <div class="spinner-border spinner-border-sm me-2" role="status">
+                    <span class="visually-hidden">Загрузка...</span>
+                </div>
+                Определение вашего местоположения...
+            </div>
+            <div v-if="locationStatus === 'denied'" class="alert alert-warning">Доступ к местоположению запрещен. Выберите маршрут вручную.</div>
+            <div v-if="locationStatus === 'error'" class="alert alert-danger">Ошибка определения местоположения. Пожалуйста, выберите маршрут.</div>
+            <div v-if="locationStatus === 'success_manual_select'" class="alert alert-secondary">Вы находитесь вне стандартных зон. Маршрут выбран по умолчанию, проверьте или измените.</div>
+        </div>
+
+        <div class="controls-bar">
+            <div class="bar">
+                <select v-model="c_route_name" class="form-select form-select-lg" aria-label="Выберите маршрут">
+                    <option :value="null" disabled>
+                        {{ locationStatus === 'pending' || !c_route_name ? 'Загрузка маршрутов...' : 'Выберите маршрут' }}
+                    </option>
+                    <option v-for="route in routes" :key="route.name" :value="route.name">
+                        {{ route.name.split('_').join(' → ') }}
+                    </option>
+                </select>
+            </div>
+            <div class="bar">
+                <select v-model="c_dof" class="form-select" aria-label="Выберите день недели">
+                    <option v-for="dof in dofs" :key="dof.key" :value="dof.key">{{dof.value}}</option>
+                </select>
+                <select v-model="c_hours" class="form-select" aria-label="Выберите час">
+                    <option v-for="hour in 24" :key="hour-1" :value="hour-1">{{(hour-1).toString().padStart(2, '0')}}</option>
+                </select>
+                <select v-model="c_minutes" class="form-select" aria-label="Выберите минуты">
+                    <option v-for="minute in 60" :key="minute-1" :value="minute-1">{{(minute-1).toString().padStart(2, '0')}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="buses">
+            <div v-if="!c_route_name" class="buses-empty-state">
+                <p>Пожалуйста, выберите маршрут.</p>
+            </div>
+            <div v-else-if="filtered_buses.length === 0" class="buses-empty-state">
+                <p>Нет рейсов для выбранного маршрута и дня.</p>
+            </div>
+            <div v-for="(bus, index) in filtered_buses" 
+                 :key="bus.time + '_' + bus.name + '_' + index" 
+                 :id="`bus_${index}`"
+                 :class="['card', { 'card-muted': isBusPastSelectedTime(bus.time) }]">
+                <div class="card-body">
+                    <div v-if="isBusDepartingSoon(bus.time)" class="est">
+                        Через {{ getMinutesToDeparture(bus.time) }} мин
+                    </div>
+                    <div class="lab">
+                        <div class="bus-name">{{bus.name}}</div>
+                        <div class="bus-time">{{secToTime(bus.time)}}</div>
+                    </div>
+                    <div v-if="isBusRecentlyDeparted(bus.time)" class="departed-status">
+                         <small>Отправился {{ getMinutesSinceDeparture(bus.time) }} мин назад</small>
+                        <div class="departed-progress-container">
+                            <div class="departed-progress">
+                                <div class="departed-progress-bar" :style="{ width: getDepartedProgressWidth(bus.time) }"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="routes.js"></script>
+    <script>
+        // Constants for Geolocation
+        const GEO_SEVERNAYA = { routeName: "Северная_Станция", latitude: 55.453396, longitude: 37.743858 }; 
+        const GEO_STANCIYA = { routeName: "Станция_Северная", latitude: 55.440050, longitude: 37.772301 }; 
+        const GEO_RADIUS_KM = 5;
+
+        const { createApp, nextTick } = Vue;
+
+        const app = createApp({
+            data() {
+                const now = new Date();
+                return {
+                    dofs: [
+                        { key: 1, value: "ПН" }, { key: 2, value: "ВТ" },
+                        { key: 3, value: "СР" }, { key: 4, value: "ЧТ" },
+                        { key: 5, value: "ПТ" }, { key: 6, value: "СБ" },
+                        { key: 0, value: "ВС" }
+                    ],
+                    routes: routes, // Loaded from routes.js
+                    
+                    c_dof: now.getDay(),
+                    c_hours: now.getHours(),
+                    c_minutes: now.getMinutes(),
+                    c_route_name: null, 
+
+                    actualTime: new Date(), // For real-time tracking
+                    
+                    locationStatus: 'pending', // 'pending', 'success_auto_selected', 'success_manual_select', 'error', 'denied'
+                    userLocation: null,
+                    timeIntervalId: null,
+                    initialLoadScrollDone: false,
+                    lastScrolledKey: '' 
+                };
+            },
+            computed: {
+                selected_time_seconds() {
+                    return this.c_hours * 3600 + this.c_minutes * 60;
+                },
+                actual_time_seconds() {
+                    return this.actualTime.getHours() * 3600 + this.actualTime.getMinutes() * 60 + this.actualTime.getSeconds();
+                },
+                actual_day_of_week() {
+                    return this.actualTime.getDay();
+                },
+                filtered_buses() {
+                    if (!this.c_route_name) return [];
+                    const routeData = this.routes.find((r) => r.name === this.c_route_name);
+                    if (!routeData) return [];
+
+                    return routeData.buses
+                        .filter((bus) => bus.dofs.includes(this.c_dof))
+                        .sort((a, b) => a.time - b.time);
+                }
+            },
+            methods: {
+                updateActualTime() {
+                    this.actualTime = new Date();
+                },
+                secToTime(totalSeconds) {
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                },
+                isBusDepartingSoon(busTime) {
+                    if (this.c_dof !== this.actual_day_of_week) return false;
+                    const diffSeconds = busTime - this.actual_time_seconds;
+                    return diffSeconds > 0 && diffSeconds <= 3600; 
+                },
+                getMinutesToDeparture(busTime) {
+                    return Math.floor((busTime - this.actual_time_seconds) / 60);
+                },
+                isBusPastSelectedTime(busTime) {
+                    // If viewing today, use actual time if it's later than selected time for muting
+                    if (this.c_dof === this.actual_day_of_week) {
+                         return busTime < Math.max(this.selected_time_seconds, this.actual_time_seconds);
+                    }
+                    return busTime < this.selected_time_seconds;
+                },
+                isBusRecentlyDeparted(busTime) {
+                    if (this.c_dof !== this.actual_day_of_week) return false;
+                    const diffSeconds = this.actual_time_seconds - busTime;
+                    return diffSeconds > 0 && diffSeconds < 15 * 60; 
+                },
+                getMinutesSinceDeparture(busTime) {
+                    return Math.floor((this.actual_time_seconds - busTime) / 60);
+                },
+                getDepartedProgressWidth(busTime) {
+                    if (!this.isBusRecentlyDeparted(busTime)) return '0%';
+                    const minutesAgo = this.getMinutesSinceDeparture(busTime);
+                    return `${Math.min(100, (minutesAgo / 15) * 100)}%`;
+                },
+                getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+                    const R = 6371; 
+                    const dLat = this.deg2rad(lat2 - lat1);
+                    const dLon = this.deg2rad(lon2 - lon1);
+                    const a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    return R * c; 
+                },
+                deg2rad(deg) {
+                    return deg * (Math.PI / 180);
+                },
+                requestUserLocation() {
+                    this.locationStatus = 'pending';
+                    if (!navigator.geolocation) {
+                        this.locationStatus = 'error';
+                        this.setDefaultRouteAndScroll();
+                        return;
+                    }
+
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            this.userLocation = {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                            };
+
+                            const distToSevernaya = this.getDistanceFromLatLonInKm(
+                                this.userLocation.latitude, this.userLocation.longitude,
+                                GEO_SEVERNAYA.latitude, GEO_SEVERNAYA.longitude
+                            );
+                            const distToStanciya = this.getDistanceFromLatLonInKm(
+                                this.userLocation.latitude, this.userLocation.longitude,
+                                GEO_STANCIYA.latitude, GEO_STANCIYA.longitude
+                            );
+
+                            if (this.routes.find(r => r.name === GEO_SEVERNAYA.routeName) && distToSevernaya <= GEO_RADIUS_KM) {
+                                this.c_route_name = GEO_SEVERNAYA.routeName;
+                                this.locationStatus = 'success_auto_selected';
+                            } else if (this.routes.find(r => r.name === GEO_STANCIYA.routeName) && distToStanciya <= GEO_RADIUS_KM) {
+                                this.c_route_name = GEO_STANCIYA.routeName;
+                                this.locationStatus = 'success_auto_selected';
+                            } else {
+                                this.locationStatus = 'success_manual_select';
+                                this.setDefaultRoute(); // Sets c_route_name
+                            }
+                            this.scheduleScrollToRelevantBus();
+                        },
+                        (error) => {
+                            if (error.code === error.PERMISSION_DENIED) {
+                                this.locationStatus = 'denied';
+                            } else {
+                                this.locationStatus = 'error';
+                            }
+                            this.setDefaultRouteAndScroll();
+                        },
+                        { timeout: 10000, enableHighAccuracy: false }
+                    );
+                },
+                setDefaultRoute() {
+                     if (!this.c_route_name && this.routes && this.routes.length > 0) {
+                        this.c_route_name = this.routes[0].name;
+                    }
+                },
+                setDefaultRouteAndScroll(){
+                    this.setDefaultRoute();
+                    this.scheduleScrollToRelevantBus();
+                },
+                scheduleScrollToRelevantBus() {
+                    nextTick(() => {
+                        this.scrollToRelevantBusLogic();
+                    });
+                },
+                scrollToRelevantBusLogic() {
+                    if (!this.filtered_buses || this.filtered_buses.length === 0) return;
+                    
+                    const currentScrollKey = `${this.c_route_name}-${this.c_dof}-${this.c_hours}-${this.c_minutes}`;
+                    
+                    if (!this.initialLoadScrollDone || this.lastScrolledKey !== currentScrollKey) {
+                        let targetIndex = -1;
+                        
+                        if (this.c_dof === this.actual_day_of_week) {
+                            targetIndex = this.filtered_buses.findIndex(bus => bus.time >= this.actual_time_seconds);
+                        }
+                        
+                        if (targetIndex === -1) {
+                             targetIndex = this.filtered_buses.findIndex(bus => bus.time >= this.selected_time_seconds);
+                        }
+
+                        if (targetIndex === -1 && this.filtered_buses.length > 0) {
+                            targetIndex = 0; 
+                        }
+                        
+                        if (targetIndex !== -1) {
+                            const busElement = document.getElementById(`bus_${targetIndex}`);
+                            if (busElement) {
+                                const behavior = this.initialLoadScrollDone ? 'smooth' : 'auto';
+                                busElement.scrollIntoView({ behavior: behavior, block: 'center' });
+                            }
+                        }
+                        this.initialLoadScrollDone = true;
+                        this.lastScrolledKey = currentScrollKey;
+                    }
+                }
+            },
+            watch: {
+                c_route_name: 'scheduleScrollToRelevantBus',
+                c_dof: 'scheduleScrollToRelevantBus',
+                c_hours: 'scheduleScrollToRelevantBus',
+                c_minutes: 'scheduleScrollToRelevantBus',
+                filtered_buses(newBuses, oldBuses) {
+                    // If buses list itself changes significantly (e.g. route change), ensure scroll happens
+                    if(JSON.stringify(newBuses) !== JSON.stringify(oldBuses)) {
+                         this.scheduleScrollToRelevantBus();
+                    }
+                }
+            },
+            mounted() {
+                this.updateActualTime(); 
+                this.timeIntervalId = setInterval(this.updateActualTime, 10000); 
+                this.requestUserLocation();
+            },
+            unmounted() {
+                clearInterval(this.timeIntervalId);
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>

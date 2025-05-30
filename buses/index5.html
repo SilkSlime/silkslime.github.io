@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DME-Buses - Расписание</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevent bouncing on mobile */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Full height of viewport */
+        }
+
+        .status-messages {
+            flex-shrink: 0; 
+            padding: 0.5rem 0.75rem;
+        }
+        .status-messages .alert {
+            margin-bottom: 0.25rem; /* Space between multiple alerts */
+            font-size: 0.85rem;
+            padding: 0.5rem 0.75rem;
+        }
+        .status-messages .alert:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .controls-bar {
+            flex-shrink: 0; 
+            padding: 0.5rem 0.75rem 0.75rem;
+            background-color: #1c1c1c; 
+            border-bottom: 1px solid #333;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .bar:last-child {
+            margin-bottom: 0;
+        }
+        .bar.live-toggle-bar {
+            margin-top: 0.5rem; /* Space above live button */
+        }
+        .live-toggle-bar .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .live-toggle-bar .btn svg {
+            margin-right: 0.5em;
+        }
+
+        .buses {
+            flex-grow: 1; 
+            overflow-y: auto; 
+            padding: 10px 0.75rem;
+            -webkit-overflow-scrolling: touch; 
+        }
+        .buses-empty-state {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: #777;
+            text-align: center;
+        }
+
+
+        .card {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-body {
+            padding: 10px 15px;
+        }
+
+        .card-muted { 
+            background-color: #222;
+            opacity: 0.6;
+        }
+        .card-muted .est, .card-muted .departed-status {
+            opacity: 0.7;
+        }
+
+
+        .est { 
+            background-color: #00796b; 
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        .lab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.05em;
+        }
+
+        .lab .bus-name {
+            font-weight: 500;
+            flex-grow: 1;
+            margin-right: 10px; 
+        }
+
+        .lab .bus-time {
+            font-family: 'SF Mono', 'Monaco', 'Consolas', 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #a5d6a7; 
+        }
+
+        .form-select {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #555;
+            font-size: 0.9rem; 
+        }
+        .form-select:disabled {
+            background-color: #2b2b2b;
+            opacity: 0.7;
+        }
+        .form-select.form-select-lg {
+            font-size: 1rem; 
+        }
+
+        .form-select:focus {
+            background-color: #444;
+            color: #e0e0e0;
+            border-color: #0d6efd; 
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .form-select option {
+            background-color: #333; 
+            color: #e0e0e0;
+        }
+        
+        .departed-status { 
+            margin-top: 8px;
+        }
+        .departed-status small {
+            font-size: 0.8em;
+            color: #9e9e9e; 
+        }
+        .departed-progress-container {
+            margin-top: 4px;
+        }
+        .departed-progress {
+            height: 4px;
+            background-color: #555; 
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .departed-progress-bar {
+            height: 100%;
+            background-color: #c62828; 
+            width: 0%; 
+            transition: width 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container-fluid p-0">
+        <div class="status-messages">
+            <div v-if="locationStatus === 'pending'" class="alert alert-info">
+                <div class="spinner-border spinner-border-sm me-2" role="status">
+                    <span class="visually-hidden">Загрузка...</span>
+                </div>
+                Определение вашего местоположения...
+            </div>
+            <div v-if="locationStatus === 'success_auto_selected'" class="alert alert-success">
+                Маршрут "{{ c_route_name.split('_').join(' → ') }}" выбран автоматически по вашему местоположению.
+            </div>
+            <div v-if="locationStatus === 'denied'" class="alert alert-warning">Доступ к местоположению запрещен. Выберите маршрут вручную.</div>
+            <div v-if="locationStatus === 'error'" class="alert alert-danger">Ошибка определения местоположения. Пожалуйста, выберите маршрут.</div>
+            <div v-if="locationStatus === 'success_manual_select'" class="alert alert-secondary">Вы находитесь вне стандартных зон или местоположение не определено. Маршрут выбран по умолчанию, проверьте или измените.</div>
+            <div v-if="locationStatus === 'no_routes_available'" class="alert alert-danger">Ошибка: Данные о маршрутах не загружены или отсутствуют.</div>
+        </div>
+
+        <div class="controls-bar">
+            <div class="bar">
+                <select v-model="c_route_name" class="form-select form-select-lg" aria-label="Выберите маршрут">
+                    <option :value="null" disabled> <!-- `selected` implicitly handled by v-model -->
+                        {{ routeSelectPlaceholderText }}
+                    </option>
+                    <option v-for="route in routes" :key="route.name" :value="route.name">
+                        {{ route.name.split('_').join(' → ') }}
+                    </option>
+                </select>
+            </div>
+            <div class="bar">
+                <select v-model="c_dof" class="form-select" aria-label="Выберите день недели" :disabled="isLiveMode">
+                    <option v-for="dof in dofs" :key="dof.key" :value="dof.key">{{dof.value}}</option>
+                </select>
+                <select v-model="c_hours" class="form-select" aria-label="Выберите час" :disabled="isLiveMode">
+                    <option v-for="hour in 24" :key="hour-1" :value="hour-1">{{(hour-1).toString().padStart(2, '0')}}</option>
+                </select>
+                <select v-model="c_minutes" class="form-select" aria-label="Выберите минуты" :disabled="isLiveMode">
+                    <option v-for="minute in 60" :key="minute-1" :value="minute-1">{{(minute-1).toString().padStart(2, '0')}}</option>
+                </select>
+            </div>
+            <div class="bar live-toggle-bar">
+                <button @click="toggleLiveMode" class="btn btn-sm w-100" :class="isLiveMode ? 'btn-primary' : 'btn-outline-secondary'">
+                    <svg v-if="isLiveMode" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-broadcast-pin" viewBox="0 0 16 16">
+                        <path d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707zm2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708zm5.656-.708a.5.5 0 0 1 .708-.708 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1-.708-.708zm2.122-2.12a.5.5 0 0 1 .707.707 8 8 0 0 1 0 11.314.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 .707-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
+                    </svg>
+                     <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+                        <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l.012.007a8 8 0 0 1 7.362 7.966A.5.5 0 0 1 15.5 8H14a1 1 0 0 0-.053.022A7 7 0 0 0 8.515 1.019M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                    </svg>
+                    {{ isLiveMode ? 'В ЭФИРЕ' : 'ЗАДАТЬ ВРЕМЯ' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="buses">
+            <div v-if="filtered_buses.length === 0" class="buses-empty-state">
+                <p v-if="!c_route_name && (!routes || routes.length === 0)">Маршруты не загружены или отсутствуют.<br/>Проверьте подключение или попробуйте позже.</p>
+                <p v-else-if="!c_route_name">Пожалуйста, выберите маршрут.</p>
+                <p v-else>Нет рейсов для выбранного маршрута и дня.</p>
+            </div>
+            <div v-for="(bus, index) in filtered_buses" 
+                 :key="bus.time + '_' + bus.name + '_' + index + '_' + c_route_name"  
+                 :id="`bus_${index}`"
+                 :class="['card', { 'card-muted': isBusPastSelectedTime(bus.time) }]">
+                <div class="card-body">
+                    <div v-if="isBusDepartingSoon(bus.time)" class="est">
+                        Через {{ getMinutesToDeparture(bus.time) }} мин
+                    </div>
+                    <div class="lab">
+                        <div class="bus-name">{{bus.name}}</div>
+                        <div class="bus-time">{{secToTime(bus.time)}}</div>
+                    </div>
+                    <div v-if="isBusRecentlyDeparted(bus.time)" class="departed-status">
+                         <small>Отправился {{ getMinutesSinceDeparture(bus.time) }} мин назад</small>
+                        <div class="departed-progress-container">
+                            <div class="departed-progress">
+                                <div class="departed-progress-bar" :style="{ width: getDepartedProgressWidth(bus.time) }"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="routes.js"></script>
+    <script>
+        // Constants for Geolocation
+        const GEO_SEVERNAYA = { routeName: "Северная_Станция", latitude: 55.453396, longitude: 37.743858 }; 
+        const GEO_STANCIYA = { routeName: "Станция_Северная", latitude: 55.440050, longitude: 37.772301 }; 
+        const GEO_RADIUS_KM = 5;
+
+        const { createApp, nextTick } = Vue;
+
+        const app = createApp({
+            data() {
+                const now = new Date();
+                let initialRoutes = [];
+                if (routes && Array.isArray(routes)) {
+                    initialRoutes = routes;
+                } else {
+                    console.error("routes.js did not load correctly or 'routes' is not an array. Using empty routes.");
+                }
+                
+                return {
+                    dofs: [
+                        { key: 1, value: "ПН" }, { key: 2, value: "ВТ" },
+                        { key: 3, value: "СР" }, { key: 4, value: "ЧТ" },
+                        { key: 5, value: "ПТ" }, { key: 6, value: "СБ" },
+                        { key: 0, value: "ВС" }
+                    ],
+                    routes: initialRoutes,
+                    
+                    c_dof: now.getDay(), // Will be updated by actualTime if isLiveMode
+                    c_hours: now.getHours(), // Will be updated by actualTime if isLiveMode
+                    c_minutes: now.getMinutes(), // Will be updated by actualTime if isLiveMode
+                    c_route_name: null, 
+
+                    actualTime: new Date(), 
+                    isLiveMode: true, // Start in live mode
+                    
+                    locationStatus: 'pending', // 'pending', 'success_auto_selected', 'success_manual_select', 'error', 'denied', 'no_routes_available'
+                    userLocation: null,
+                    timeIntervalId: null,
+                    initialLoadScrollDone: false,
+                    lastScrolledKey: '' 
+                };
+            },
+            computed: {
+                selected_time_seconds() {
+                    return this.c_hours * 3600 + this.c_minutes * 60;
+                },
+                actual_time_seconds() {
+                    return this.actualTime.getHours() * 3600 + this.actualTime.getMinutes() * 60 + this.actualTime.getSeconds();
+                },
+                actual_day_of_week() {
+                    return this.actualTime.getDay();
+                },
+                filtered_buses() {
+                    if (!this.c_route_name || !this.routes || this.routes.length === 0) return [];
+                    const routeData = this.routes.find((r) => r.name === this.c_route_name);
+                    if (!routeData) return [];
+
+                    return routeData.buses
+                        .filter((bus) => bus.dofs.includes(this.c_dof))
+                        .sort((a, b) => a.time - b.time);
+                },
+                routeSelectPlaceholderText() {
+                    if (this.locationStatus === 'pending') return 'Определение местоположения...';
+                    if (!this.routes || this.routes.length === 0) return 'Нет доступных маршрутов';
+                    // If c_route_name is null at this point, it implies routes are loaded but none is selected yet.
+                    return 'Загрузка / Выберите маршрут'; 
+                }
+            },
+            methods: {
+                updateActualTime() {
+                    this.actualTime = new Date();
+                    if (this.isLiveMode) {
+                        this.c_dof = this.actual_day_of_week;
+                        this.c_hours = this.actualTime.getHours();
+                        this.c_minutes = this.actualTime.getMinutes();
+                    }
+                },
+                toggleLiveMode() {
+                    this.isLiveMode = !this.isLiveMode;
+                    if (this.isLiveMode) {
+                        this.updateActualTime(); // Immediately sync to live time
+                    } else {
+                        // When switching off live, keep current values or reset to actual time as a starting point
+                        // For simplicity, let's ensure the selected time is the current actual time
+                        const now = new Date();
+                        this.c_dof = now.getDay();
+                        this.c_hours = now.getHours();
+                        this.c_minutes = now.getMinutes();
+                    }
+                    this.scheduleScrollToRelevantBus(); // Time changed, so scroll might be needed
+                },
+                secToTime(totalSeconds) {
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                },
+                isBusDepartingSoon(busTime) {
+                    if (this.c_dof !== this.actual_day_of_week) return false;
+                    const diffSeconds = busTime - this.actual_time_seconds;
+                    return diffSeconds > 0 && diffSeconds <= 3600; 
+                },
+                getMinutesToDeparture(busTime) {
+                    return Math.floor((busTime - this.actual_time_seconds) / 60);
+                },
+                isBusPastSelectedTime(busTime) {
+                    if (this.c_dof === this.actual_day_of_week) {
+                         return busTime < Math.max(this.selected_time_seconds, this.actual_time_seconds);
+                    }
+                    return busTime < this.selected_time_seconds;
+                },
+                isBusRecentlyDeparted(busTime) {
+                    if (this.c_dof !== this.actual_day_of_week) return false;
+                    const diffSeconds = this.actual_time_seconds - busTime;
+                    return diffSeconds > 0 && diffSeconds < 15 * 60; 
+                },
+                getMinutesSinceDeparture(busTime) {
+                    return Math.floor((this.actual_time_seconds - busTime) / 60);
+                },
+                getDepartedProgressWidth(busTime) {
+                    if (!this.isBusRecentlyDeparted(busTime)) return '0%';
+                    const minutesAgo = this.getMinutesSinceDeparture(busTime);
+                    return `${Math.min(100, (minutesAgo / 15) * 100)}%`;
+                },
+                getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+                    const R = 6371; 
+                    const dLat = this.deg2rad(lat2 - lat1);
+                    const dLon = this.deg2rad(lon2 - lon1);
+                    const a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    return R * c; 
+                },
+                deg2rad(deg) {
+                    return deg * (Math.PI / 180);
+                },
+                setDefaultRoute() {
+                    if (this.routes && this.routes.length > 0) {
+                        if (this.c_route_name === null) { // Only set if not already set (e.g., by prior geo success)
+                            this.c_route_name = this.routes[0].name;
+                        }
+                    } else {
+                        this.c_route_name = null; 
+                        // Only update status if it's not already a more specific error/denial
+                        if (!['error', 'denied', 'pending'].includes(this.locationStatus)) {
+                           this.locationStatus = 'no_routes_available';
+                        }
+                        console.warn("No routes available to set a default route.");
+                    }
+                },
+                requestUserLocation() {
+                    this.locationStatus = 'pending';
+                    if (!this.routes || this.routes.length === 0) {
+                        this.locationStatus = 'no_routes_available';
+                        this.setDefaultRoute(); // Ensure c_route_name is null
+                        this.scheduleScrollToRelevantBus();
+                        return;
+                    }
+
+                    if (!navigator.geolocation) {
+                        this.locationStatus = 'error'; // Or 'success_manual_select' if we prefer that behavior
+                        this.setDefaultRoute(); 
+                        this.scheduleScrollToRelevantBus();
+                        return;
+                    }
+
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            this.userLocation = {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                            };
+
+                            const distToSevernaya = this.getDistanceFromLatLonInKm(
+                                this.userLocation.latitude, this.userLocation.longitude,
+                                GEO_SEVERNAYA.latitude, GEO_SEVERNAYA.longitude
+                            );
+                            const distToStanciya = this.getDistanceFromLatLonInKm(
+                                this.userLocation.latitude, this.userLocation.longitude,
+                                GEO_STANCIYA.latitude, GEO_STANCIYA.longitude
+                            );
+
+                            let autoSelected = false;
+                            if (this.routes.find(r => r.name === GEO_SEVERNAYA.routeName) && distToSevernaya <= GEO_RADIUS_KM) {
+                                this.c_route_name = GEO_SEVERNAYA.routeName;
+                                this.locationStatus = 'success_auto_selected';
+                                autoSelected = true;
+                            } else if (this.routes.find(r => r.name === GEO_STANCIYA.routeName) && distToStanciya <= GEO_RADIUS_KM) {
+                                this.c_route_name = GEO_STANCIYA.routeName;
+                                this.locationStatus = 'success_auto_selected';
+                                autoSelected = true;
+                            } 
+                            
+                            if (!autoSelected) {
+                                this.locationStatus = 'success_manual_select';
+                                if (this.c_route_name === null) this.setDefaultRoute(); // Set default if none auto-selected AND none was set before geo
+                            }
+                            this.scheduleScrollToRelevantBus();
+                        },
+                        (error) => {
+                            if (error.code === error.PERMISSION_DENIED) {
+                                this.locationStatus = 'denied';
+                            } else {
+                                this.locationStatus = 'error';
+                            }
+                            if (this.c_route_name === null) this.setDefaultRoute();
+                            this.scheduleScrollToRelevantBus();
+                        },
+                        { timeout: 10000, enableHighAccuracy: false }
+                    );
+                },
+                scheduleScrollToRelevantBus() {
+                    nextTick(() => {
+                        this.scrollToRelevantBusLogic();
+                    });
+                },
+                scrollToRelevantBusLogic() {
+                    if (!this.filtered_buses || this.filtered_buses.length === 0) return;
+                    
+                    const currentScrollKey = `${this.c_route_name}-${this.c_dof}-${this.c_hours}-${this.c_minutes}`;
+                    
+                    // Always scroll if the key changed, or if it's the initial load without a key yet
+                    if (!this.initialLoadScrollDone || this.lastScrolledKey !== currentScrollKey) {
+                        let targetIndex = -1;
+                        
+                        if (this.c_dof === this.actual_day_of_week && this.isLiveMode) { // Scroll to actual_time if live and today
+                            targetIndex = this.filtered_buses.findIndex(bus => bus.time >= this.actual_time_seconds);
+                        } else { // Scroll to selected_time otherwise
+                             targetIndex = this.filtered_buses.findIndex(bus => bus.time >= this.selected_time_seconds);
+                        }
+                        
+                        if (targetIndex === -1 && this.filtered_buses.length > 0) { // If all passed for selection, scroll to first
+                            targetIndex = 0; 
+                        }
+                        
+                        if (targetIndex !== -1) {
+                            const busElement = document.getElementById(`bus_${targetIndex}`);
+                            if (busElement) {
+                                const behavior = this.initialLoadScrollDone ? 'smooth' : 'auto';
+                                busElement.scrollIntoView({ behavior: behavior, block: 'center' });
+                            }
+                        }
+                        if (!this.initialLoadScrollDone) this.initialLoadScrollDone = true;
+                        this.lastScrolledKey = currentScrollKey;
+                    }
+                }
+            },
+            watch: {
+                c_route_name: 'scheduleScrollToRelevantBus',
+                c_dof: 'scheduleScrollToRelevantBus',
+                c_hours: 'scheduleScrollToRelevantBus',
+                c_minutes: 'scheduleScrollToRelevantBus',
+                filtered_buses(newBuses, oldBuses) {
+                    if(JSON.stringify(newBuses) !== JSON.stringify(oldBuses)) {
+                         this.scheduleScrollToRelevantBus();
+                    }
+                }
+            },
+            mounted() {
+                this.updateActualTime(); // Initializes actualTime and dependent c_dof, c_hours, c_minutes if isLiveMode
+                this.timeIntervalId = setInterval(this.updateActualTime, 10000); 
+                
+                // Attempt to set a default route immediately.
+                // This ensures c_route_name is populated if routes are available,
+                // before geolocation (which might override it).
+                this.setDefaultRoute(); 
+                
+                this.requestUserLocation(); // Tries to get location and potentially override c_route_name
+            },
+            unmounted() {
+                clearInterval(this.timeIntervalId);
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>

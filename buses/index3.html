@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>DME-Buses Updated</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overscroll-behavior-y: contain; 
+        }
+
+        #app {
+            padding: 15px 10px; /* Adjusted padding for container */
+            display: flex;
+            flex-direction: column;
+            gap: 15px 0px;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .controls-bar {
+            display: flex;
+            gap: 0px 10px;
+            align-items: center;
+        }
+        .controls-bar .form-select, .controls-bar .btn {
+            /* flex-grow: 1; Base rule, specific overrides below */
+        }
+        .route-selector-bar .form-select {
+            flex-grow: 1;
+        }
+        .time-controls-bar .form-select {
+            flex-grow: 1;
+        }
+        .time-sync-button { /* Class for the sync button */
+            flex-grow: 0; /* Don't let sync button take too much space */
+            flex-shrink: 0;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+
+        .buses {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 5px; 
+        }
+
+        .bus-card {
+            /* Base card styling from Bootstrap is fine */
+        }
+        
+        .bus-card.card-muted {
+            background-color: rgba(var(--bs-secondary-rgb), 0.15) !important;
+            border-color: rgba(var(--bs-secondary-rgb), 0.25) !important;
+        }
+        .bus-card .card-body {
+            padding: 0.75rem 1rem;
+        }
+
+        .bus-details-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.05em; /* Slightly adjusted */
+        }
+        .bus-details-label .bus-name {
+            font-weight: 500;
+            margin-right: 10px; /* Space between name and time */
+            word-break: break-word; /* Prevent overflow for long names */
+        }
+        .bus-details-label .bus-time {
+            font-weight: bold;
+            font-size: 1.1em; /* Slightly adjusted */
+            white-space: nowrap;
+        }
+
+        .time-to-departure {
+            text-align: right;
+            color: var(--bs-teal);
+            font-weight: bold;
+            padding-bottom: 5px;
+            font-size: 0.95em;
+        }
+        
+        .departed-info {
+            padding-top: 5px;
+            font-size: 0.9em; /* Unified size */
+            color: var(--bs-secondary-color);
+            border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
+            margin-top: 8px; /* Increased margin */
+        }
+        .departed-info.text-warning { /* For recently departed */
+             color: var(--bs-yellow) !important; /* Bootstrap warning yellow */
+        }
+
+
+        .status-message-bar {
+            font-size: 0.9em;
+            padding: 8px 12px; /* Adjusted padding */
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+            border-radius: var(--bs-border-radius);
+            text-align: center;
+            /* margin-bottom: 10px; Gap is handled by parent flex */
+        }
+        .loading-spinner {
+            margin-right: 8px;
+        }
+        .status-message-bar a {
+            color: var(--bs-info);
+            text-decoration: none;
+        }
+        .status-message-bar a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <!-- Location Status / Loading -->
+        <div v-if="isLoadingLocation || locationStatusMessage" class="status-message-bar">
+            <span v-if="isLoadingLocation" class="spinner-border spinner-border-sm loading-spinner" role="status" aria-hidden="true"></span>
+            <span v-html="isLoadingLocation ? 'Detecting your location...' : locationStatusMessage"></span>
+        </div>
+
+        <!-- Route Selector -->
+        <div v-if="showRouteSelector" class="controls-bar route-selector-bar">
+            <select v-model="c_route_name" class="form-select form-select-lg">
+                <option v-if="!routes.length" disabled value="">Loading routes...</option>
+                 <option v-else-if="routes.length > 0 && !c_route_name" disabled value="">Select a route</option>
+                <option v-for="route in routes" :key="route.name" :value="route.name">{{formatRouteName(route.name)}}</option>
+            </select>
+        </div>
+        
+        <!-- Day and Time Selectors -->
+        <div class="controls-bar">
+            <select v-model="c_dof" @change="handleTimeSelectionChange" class="form-select">
+                <option v-for="dof in dofs" :key="dof.key" :value="dof.key">{{dof.value}}</option>
+            </select>
+             <button @click="syncToCurrentTimeAndGoLive" class="btn btn-outline-secondary time-sync-button" title="Sync to Current Time">
+                <i :class="['bi', usingRealTime ? 'bi-record-circle-fill text-danger' : 'bi-arrow-clockwise']"></i>
+                <span class="ms-1">{{ usingRealTime ? 'Live' : 'Sync' }}</span>
+            </button>
+        </div>
+        <div class="controls-bar time-controls-bar">
+            <select v-model="c_hours" @change="handleTimeSelectionChange" class="form-select">
+                <option v-for="hour in 24" :key="hour-1" :value="hour-1">{{(hour-1).toString().padStart(2, '0')}}</option>
+            </select>
+            <span class="fs-5 mx-1">:</span>
+            <select v-model="c_minutes" @change="handleTimeSelectionChange" class="form-select">
+                <option v-for="minute in 60" :key="minute-1" :value="minute-1">{{(minute-1).toString().padStart(2, '0')}}</option>
+            </select>
+        </div>
+
+        <!-- Bus List -->
+        <div class="buses">
+            <div v-if="!c_route_name && !isLoadingLocation" class="text-center p-3 status-message-bar">
+                Please select a route to see the schedule.
+            </div>
+            <div v-else-if="c_buses.length === 0 && c_route_name && !isLoadingLocation" class="text-center p-3 status-message-bar">
+                No buses scheduled for {{ formatRouteName(c_route_name) }} on {{ getDayName(c_dof) }}.
+            </div>
+            
+            <div v-for="(bus, index) in c_buses" :key="bus.time + '_' + bus.name + '_' + index" :id="`bus_${index}`"
+                :class="['card', 'bus-card', { 'card-muted': bus.time - c_time_for_schedule <= 0 && getMinutesAgo(bus.time) >= 15 }]">
+                <div class="card-body">
+                    <div v-if="bus.time - c_time_for_schedule > 0 && getTimeToDeparture(bus.time) < 60" class="time-to-departure">
+                        <i class="bi bi-clock"></i> Через {{ getTimeToDeparture(bus.time) }} мин
+                    </div>
+                    <div class="bus-details-label">
+                        <div class="bus-name">{{bus.name}}</div>
+                        <div class="bus-time">{{secToTime(bus.time)}}</div>
+                    </div>
+                    <div v-if="(c_time_for_schedule - bus.time) > 0 && getMinutesAgo(bus.time) < 15" class="departed-info text-warning">
+                        <i class="bi bi-skip-backward-circle-fill"></i> Departed {{ getMinutesAgo(bus.time) }} min ago
+                    </div>
+                     <div v-else-if="(c_time_for_schedule - bus.time) > 0" class="departed-info">
+                        <i class="bi bi-check-circle"></i> Departed
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="routes.js"></script>
+    <script>
+        // --- IMPORTANT: REPLACE WITH ACTUAL COORDINATES ---
+        const GEO_SEVERNAYA_COORDS = {lat: 55.453396, lon: 37.743858 }; 
+        const GEO_STANCIYA_COORDS = {lat: 55.440050, lon: 37.772301 }; 
+        // ---
+
+        // Route names from routes.js - ensure these exactly match your routes.js file
+        const ROUTE_NAME_SEVERNAYA_TO_STANCIYA = "\u0421\u0435\u0432\u0435\u0440\u043d\u0430\u044f_\u0421\u0442\u0430\u043d\u0446\u0438\u044f"; // Северная_Станция
+        const ROUTE_NAME_STANCIYA_TO_SEVERNAYA = "\u0421\u0442\u0430\u043d\u0446\u0438\u044f_\u0421\u0435\u0432\u0435\u0440\u043d\u0430\u044f"; // Станция_Северная
+
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                const now = new Date();
+                return {
+                    dofs: [{ key: 1, value: "Понедельник" }, { key: 2, value: "Вторник" }, { key: 3, value: "Среда" }, { key: 4, value: "Четверг" }, { key: 5, value: "Пятница" }, { key: 6, value: "Суббота" }, { key: 0, value: "Воскресенье" }],
+                    routes: routes || [],
+                    c_dof: now.getDay(),
+                    c_hours: now.getHours(),
+                    c_minutes: now.getMinutes(),
+                    c_route_name: '', 
+                    
+                    liveUpdateInterval: null,
+                    usingRealTime: true,
+                    
+                    isLoadingLocation: true,
+                    locationStatusMessage: '',
+                    shouldShowRouteSelector: false, 
+                }
+            },
+            computed: {
+                c_time_for_schedule() {
+                    return this.c_hours * 3600 + this.c_minutes * 60;
+                },
+                c_buses() {
+                    if (!this.c_route_name || !this.routes.length) return [];
+                    
+                    const routeData = this.routes.find((x) => x.name == this.c_route_name);
+                    if (!routeData) return [];
+
+                    let r = routeData.buses
+                        .filter((x) => x.dofs.includes(this.c_dof))
+                        .sort((a, b) => a.time - b.time);
+
+                    this.$nextTick(() => {
+                        this.scrollToRelevantBus(r);
+                    });
+                    return r;
+                },
+                showRouteSelector() {
+                    return this.isLoadingLocation ? false : this.shouldShowRouteSelector;
+                }
+            },
+            methods: {
+                updateTimeValues(dateObj) {
+                    this.c_dof = dateObj.getDay();
+                    this.c_hours = dateObj.getHours();
+                    this.c_minutes = dateObj.getMinutes();
+                },
+                handleTimeSelectionChange() {
+                    this.usingRealTime = false;
+                    this.locationStatusMessage = "Displaying schedule for selected time. Click Sync to go live.";
+                },
+                syncToCurrentTimeAndGoLive() {
+                    this.usingRealTime = true;
+                    this.updateTimeValues(new Date());
+                    this.locationStatusMessage = `Live time active. Route: <strong>${this.formatRouteName(this.c_route_name)}</strong>. <a href="#" @click.prevent="triggerManualRouteSelection">Change route?</a>`;
+                     if (!this.liveUpdateInterval) {
+                        this.startLiveUpdates();
+                    }
+                },
+                startLiveUpdates() {
+                    if (this.liveUpdateInterval) clearInterval(this.liveUpdateInterval);
+                    this.liveUpdateInterval = setInterval(() => {
+                        if (this.usingRealTime) {
+                            const now = new Date();
+                            if (now.getMinutes() !== this.c_minutes || now.getHours() !== this.c_hours || now.getDay() !== this.c_dof) {
+                                this.updateTimeValues(now);
+                            }
+                        }
+                    }, 15000); 
+                },
+                requestLocation() {
+                    this.isLoadingLocation = true;
+                    this.locationStatusMessage = "";
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            this.handleLocationSuccess,
+                            this.handleLocationError,
+                            { timeout: 10000, enableHighAccuracy: false }
+                        );
+                    } else {
+                        this.isLoadingLocation = false;
+                        this.locationStatusMessage = "Geolocation not supported. Please select route manually.";
+                        this.shouldShowRouteSelector = true;
+                        this.setDefaultRouteIfNeeded();
+                    }
+                },
+                handleLocationSuccess(position) {
+                    this.isLoadingLocation = false;
+                    const { latitude, longitude } = position.coords;
+                    
+                    const distToSevernaya = this.haversineDistance(latitude, longitude, GEO_SEVERNAYA_COORDS.lat, GEO_SEVERNAYA_COORDS.lon);
+                    const distToStanciya = this.haversineDistance(latitude, longitude, GEO_STANCIYA_COORDS.lat, GEO_STANCIYA_COORDS.lon);
+                    const fiveKM = 5;
+                    let autoSelected = false;
+
+                    if (distToSevernaya <= fiveKM) {
+                        this.c_route_name = ROUTE_NAME_SEVERNAYA_TO_STANCIYA;
+                        autoSelected = true;
+                    } else if (distToStanciya <= fiveKM) {
+                        this.c_route_name = ROUTE_NAME_STANCIYA_TO_SEVERNAYA;
+                        autoSelected = true;
+                    }
+
+                    if (autoSelected) {
+                        this.locationStatusMessage = `Route <strong>${this.formatRouteName(this.c_route_name)}</strong> auto-selected. <a href="#" @click.prevent="triggerManualRouteSelection">Change?</a>`;
+                        this.shouldShowRouteSelector = false;
+                    } else {
+                        this.locationStatusMessage = "Not near a major stop. Please select route manually.";
+                        this.shouldShowRouteSelector = true;
+                        this.setDefaultRouteIfNeeded();
+                    }
+                },
+                handleLocationError(error) {
+                    this.isLoadingLocation = false;
+                    let msg = "Could not get location: ";
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED: msg += "Permission denied."; break;
+                        case error.POSITION_UNAVAILABLE: msg += "Information unavailable."; break;
+                        case error.TIMEOUT: msg += "Request timed out."; break;
+                        default: msg += "Unknown error."; break;
+                    }
+                    this.locationStatusMessage = msg + " Please select route manually.";
+                    this.shouldShowRouteSelector = true;
+                    this.setDefaultRouteIfNeeded();
+                },
+                triggerManualRouteSelection() {
+                    this.shouldShowRouteSelector = true;
+                    this.locationStatusMessage = "Please select a route.";
+                },
+                setDefaultRouteIfNeeded() {
+                    if (!this.c_route_name && this.routes.length > 0) {
+                         // Don't auto-select a default if user needs to pick
+                         // this.c_route_name = this.routes[0].name; 
+                    }
+                },
+                haversineDistance(lat1, lon1, lat2, lon2) { // In kilometers
+                    const R = 6371; 
+                    const dLat = (lat2 - lat1) * Math.PI / 180;
+                    const dLon = (lon2 - lon1) * Math.PI / 180;
+                    const a = 0.5 - Math.cos(dLat) / 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * (1 - Math.cos(dLon)) / 2;
+                    return R * 2 * Math.asin(Math.sqrt(a));
+                },
+                formatRouteName(name) {
+                    if (!name) return 'N/A';
+                    return name.split('_').join(' → ');
+                },
+                secToTime(sec) {
+                    return `${Math.floor(sec / 3600).toString().padStart(2, '0')}:${Math.floor(sec / 60 % 60).toString().padStart(2, '0')}`;
+                },
+                scrollToRelevantBus(busesToList) {
+                    if (!busesToList || busesToList.length === 0 || !this.c_route_name) return;
+                    const currentTimeInSeconds = this.c_time_for_schedule;
+                    
+                    let targetIndex = busesToList.findIndex(bus => bus.time > currentTimeInSeconds);
+
+                    if (targetIndex === -1 && busesToList.length > 0) { 
+                        targetIndex = 0; 
+                    }
+                    
+                    if (targetIndex !== -1) {
+                        const busElement = document.getElementById(`bus_${targetIndex}`);
+                        if (busElement) {
+                            const rect = busElement.getBoundingClientRect();
+                            const isVisible = (rect.top >= 0 && rect.bottom <= window.innerHeight);
+                            if(!isVisible || rect.top > window.innerHeight * 0.3) { // Scroll if not visible or not near center-top
+                                busElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+                            }
+                        }
+                    }
+                },
+                getMinutesAgo(busTime) {
+                    return Math.floor((this.c_time_for_schedule - busTime) / 60);
+                },
+                getTimeToDeparture(busTime) {
+                    return Math.floor((busTime - this.c_time_for_schedule) / 60);
+                },
+                getDayName(dofKey) {
+                    const day = this.dofs.find(d => d.key === dofKey);
+                    return day ? day.value : 'selected day';
+                }
+            },
+            watch: {
+                c_route_name(newName, oldName) {
+                    if (newName && newName !== oldName && !this.isLoadingLocation) {
+                         // Update status only if not part of initial auto-selection message
+                        if (!this.locationStatusMessage.includes("auto-selected") || this.shouldShowRouteSelector) {
+                             this.locationStatusMessage = `Route changed to <strong>${this.formatRouteName(newName)}</strong>. <a href="#" @click.prevent="triggerManualRouteSelection">Change?</a>`;
+                        }
+                         this.shouldShowRouteSelector = false; // Hide selector once a route is chosen
+                    }
+                    if (this.usingRealTime === false) { // If user manually picked time, then changed route
+                        this.syncToCurrentTimeAndGoLive(); // Re-sync time when route changes
+                    } else if (this.usingRealTime === true && newName) { // If live and route changes
+                         this.locationStatusMessage = `Live time active. Route: <strong>${this.formatRouteName(newName)}</strong>. <a href="#" @click.prevent="triggerManualRouteSelection">Change?</a>`;
+                    }
+                }
+            },
+            mounted() {
+                this.requestLocation();
+                this.startLiveUpdates();
+            },
+            beforeUnmount() {
+                if (this.liveUpdateInterval) {
+                    clearInterval(this.liveUpdateInterval);
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
